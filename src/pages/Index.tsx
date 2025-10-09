@@ -153,20 +153,20 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
               <CardContent className="p-8">
-                <p className="text-lg italic mb-4">
+                <p className="text-lg italic mb-4 text-white">
                   "A ARQUICE mudou minha vida. Hoje tenho uma profissão e consigo sustentar
                   minha família com dignidade através do artesanato que aprendi aqui."
                 </p>
-                <p className="font-bold">- Maria, ex-aluna do curso de artesanato</p>
+                <p className="font-bold text-white">- Maria, ex-aluna do curso de artesanato</p>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
               <CardContent className="p-8">
-                <p className="text-lg italic mb-4">
+                <p className="text-lg italic mb-4 text-white">
                   "Meu filho era tímido e tinha dificuldades na escola. Depois do reforço
                   escolar, ele está mais confiante e tirando notas melhores!"
                 </p>
-                <p className="font-bold">- João, pai de beneficiário</p>
+                <p className="font-bold text-white">- João, pai de beneficiário </p>
               </CardContent>
             </Card>
           </div>
@@ -193,7 +193,7 @@ const Index = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 btn-hover-lift border-white text-white hover:bg-white hover:text-secondary"
+                className="text-lg px-8 btn-hover-lift border-white text-black hover:bg-white hover:text-primary"
               >
                 Entre em Contato
               </Button>

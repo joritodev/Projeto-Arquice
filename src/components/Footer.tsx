@@ -4,7 +4,7 @@ import logo from "@/assets/arquice-logo.jpg";
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary text-secondary-foreground mt-20">
+    <footer className="bg-primary text-secondary-foreground mt-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo e Descrição */}
@@ -22,7 +22,7 @@ const Footer = () => {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
+                className="hover:text-secondary transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook size={24} />
@@ -31,7 +31,7 @@ const Footer = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
+                className="hover:text-secondary transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram size={24} />
@@ -44,27 +44,27 @@ const Footer = () => {
             <h3 className="font-heading font-bold text-lg mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/quem-somos" className="hover:text-primary transition-colors">
+                <Link to="/quem-somos" className="hover:text-secondary transition-colors">
                   Quem Somos
                 </Link>
               </li>
               <li>
-                <Link to="/projetos" className="hover:text-primary transition-colors">
+                <Link to="/projetos" className="hover:text-secondary transition-colors">
                   Projetos
                 </Link>
               </li>
               <li>
-                <Link to="/como-ajudar" className="hover:text-primary transition-colors">
+                <Link to="/como-ajudar" className="hover:text-secondary transition-colors">
                   Como Ajudar
                 </Link>
               </li>
               <li>
-                <Link to="/noticias" className="hover:text-primary transition-colors">
+                <Link to="/noticias" className="hover:text-secondary transition-colors">
                   Notícias
                 </Link>
               </li>
               <li>
-                <Link to="/contato" className="hover:text-primary transition-colors">
+                <Link to="/contato" className="hover:text-secondary transition-colors">
                   Contato
                 </Link>
               </li>

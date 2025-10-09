@@ -130,13 +130,11 @@ const Projetos = () => {
             <Card className="border-none shadow-lg">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-heading font-bold mb-4 text-primary">
-                  Nossa Sede Própria
+                  Nossa Oficina de Costura
                 </h3>
                 <p className="text-muted-foreground text-lg mb-6">
-                  Sonhamos em construir uma sede própria para a ARQUICE, um espaço que
-                  possa abrigar todas as nossas atividades: salas de aula, oficinas de
-                  artesanato, biblioteca comunitária e espaços de convivência. Um local
-                  onde a comunidade possa se reunir, aprender e crescer juntos.
+                  Sonhamos em construir uma oficina de costura para a ARQUICE, um espaço que
+                  possa abrigar nossas atividades para ajudar as pessoas a terem uma nova fonte de renda 	.
                 </p>
                 <div className="bg-primary/10 rounded-lg p-6">
                   <p className="font-semibold text-lg mb-2">Meta de Investimento:</p>

@@ -150,23 +150,6 @@ const ComoAjudar = () => {
           </div>
         </div>
       </section>
-
-      {/* Transparência */}
-      <section className="py-16 container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-            Transparência Total
-          </h2>
-          <p className="text-muted-foreground text-lg mb-8">
-            Todas as doações recebidas são utilizadas de forma responsável e transparente
-            em nossos projetos. Publicamos relatórios anuais detalhando nossas atividades
-            e prestação de contas financeira.
-          </p>
-          <Button variant="outline" size="lg" className="btn-hover-lift">
-            Ver Relatórios de Transparência
-          </Button>
-        </div>
-      </section>
     </div>
   );
 };
