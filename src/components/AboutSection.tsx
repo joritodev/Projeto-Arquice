@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CardContent } from "./ui/card";
 import { Award, Eye, Target, Users } from "lucide-react";
 

@@ -1,5 +1,4 @@
-import { Target, Users, Heart, Lightbulb } from "lucide-react";
-import React from "react";
+import { Target, Heart, Lightbulb } from "lucide-react";
 
 export function CauseSection() {
   return (

@@ -1,7 +1,6 @@
 import { Card, CardContent } from "./ui/card";
 import { Linkedin, Mail } from "lucide-react";
 import { Button } from "./ui/button";
-import React from "react";
 
 export function TeamSection() {
   const team = [

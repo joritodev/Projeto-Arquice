@@ -1,5 +1,4 @@
 import { Heart, Facebook, Instagram, Linkedin, Youtube, Mail, MapPin, Phone } from "lucide-react";
-import React from "react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
