@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { ArrowRight, Heart } from "lucide-react";
-import Banner from "../assets/HomePicture.jpg"
+import Banner from "../assets/BannerPicture.jpg"
 
 export function Hero() {
   return (

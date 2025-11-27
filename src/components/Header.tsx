@@ -12,7 +12,6 @@ export function Header() {
     { name: "Projetos", href: "#projetos" },
     { name: "Quem Somos", href: "#sobre" },
     { name: "Equipe", href: "#equipe" },
-    { name: "Imprensa", href: "#imprensa" },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {

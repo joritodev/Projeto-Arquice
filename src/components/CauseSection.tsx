@@ -1,4 +1,5 @@
 import { Target, Heart, Lightbulb } from "lucide-react";
+import CausePicture from "../assets/SocialCausePicture.jpg"
 
 export function CauseSection() {
   return (
@@ -22,7 +23,7 @@ export function CauseSection() {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="relative rounded-lg overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1727473704274-3fbad0dbbd60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMGVkdWNhdGlvbiUyMHN1cHBvcnR8ZW58MXx8fHwxNzYwMDM4ODc0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+              src={CausePicture}
               alt="Crianças em programa educacional da OSC"
               className="w-full h-[400px] object-cover"
             />
