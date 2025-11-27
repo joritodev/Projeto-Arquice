@@ -1,45 +1,35 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
-import WhatsAppButton from "./components/WhatsAppButton";
-import Index from "./pages/Index";
-import QuemSomos from "./pages/QuemSomos";
-import Projetos from "./pages/Projetos";
-import ComoAjudar from "./pages/ComoAjudar";
-import Contato from "./pages/Contato";
-import NotFound from "./pages/NotFound";
+import { Header } from "./components/Header";
+import { Hero } from "./components/Hero";
+import { CauseSection } from "./components/CauseSection";
+import { ProjectsSection } from "./components/ProjectsSection";
+import { AboutSection } from "./components/AboutSection";
+import { TeamSection } from "./components/TeamSection";
+import { DonationSection } from "./components/DonationSection";
+import { Footer } from "./components/Footer";
 
-const queryClient = new QueryClient();
+export default function App() {
+  return (
+    <div className="min-h-screen">
+      {/* Skip to main content link for screen readers */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded"
+      >
+        Pular para o conteúdo principal
+      </a>
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navigation />
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/quem-somos" element={<QuemSomos />} />
-              <Route path="/projetos" element={<Projetos />} />
-              <Route path="/como-ajudar" element={<ComoAjudar />} />
-              <Route path="/contato" element={<Contato />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <WhatsAppButton />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      <Header />
 
-export default App;
+      <main id="main-content" role="main">
+        <Hero />
+        <CauseSection />
+        <ProjectsSection />
+        <AboutSection />
+        <TeamSection />
+        <DonationSection />
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

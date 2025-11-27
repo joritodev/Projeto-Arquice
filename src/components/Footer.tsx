@@ -1,104 +1,119 @@
-import { Link } from "react-router-dom";
-import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import logo from "@/assets/arquice-logo.jpg";
+import { Heart, Facebook, Instagram, Linkedin, Youtube, Mail, MapPin, Phone } from "lucide-react";
+import React from "react";
 
-const Footer = () => {
+export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-primary text-secondary-foreground mt-20">
+    <footer className="bg-primary text-primary-foreground" role="contentinfo">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Logo e Descrição */}
           <div className="md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <img src={logo} alt="ARQUICE" className="h-12 w-12 object-contain" />
-              <span className="text-2xl font-heading font-bold">ARQUICE</span>
+            <div className="flex items-center gap-2 mb-4">
+              <Heart className="h-8 w-8 fill-current" aria-hidden="true" />
+              <span className="text-xl">OSC Transformando Vidas</span>
             </div>
-            <p className="text-secondary-foreground/80 mb-4">
-              Associação de Resgate, Qualificação e Inclusão Social em Curralinho e Entorno.
-              Transformando vidas através da educação e capacitação.
+            <p className="opacity-90 mb-4">
+              Organização comprometida com a transformação social através da educação, 
+              inclusão e desenvolvimento humano.
             </p>
-            <div className="flex space-x-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-secondary transition-colors"
+            <div className="flex gap-3">
+              <a 
+                href="#facebook" 
+                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Facebook"
               >
-                <Facebook size={24} />
+                <Facebook className="h-5 w-5" aria-hidden="true" />
               </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-secondary transition-colors"
+              <a 
+                href="#instagram" 
+                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Instagram"
               >
-                <Instagram size={24} />
+                <Instagram className="h-5 w-5" aria-hidden="true" />
+              </a>
+              <a 
+                href="#linkedin" 
+                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" aria-hidden="true" />
+              </a>
+              <a 
+                href="#youtube" 
+                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                aria-label="YouTube"
+              >
+                <Youtube className="h-5 w-5" aria-hidden="true" />
               </a>
             </div>
           </div>
 
           {/* Links Rápidos */}
           <div>
-            <h3 className="font-heading font-bold text-lg mb-4">Links Rápidos</h3>
+            <h3 className="mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/quem-somos" className="hover:text-secondary transition-colors">
+                <a href="#sobre" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
                   Quem Somos
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/projetos" className="hover:text-secondary transition-colors">
+                <a href="#projetos" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
                   Projetos
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/como-ajudar" className="hover:text-secondary transition-colors">
-                  Como Ajudar
-                </Link>
-              </li>
-              <li>
-                <Link to="/noticias" className="hover:text-secondary transition-colors">
-                  Notícias
-                </Link>
-              </li>
-              <li>
-                <Link to="/contato" className="hover:text-secondary transition-colors">
-                  Contato
-                </Link>
+                <a href="#doacoes" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
+                  Como Doar
+                </a>
               </li>
             </ul>
           </div>
 
           {/* Contato */}
           <div>
-            <h3 className="font-heading font-bold text-lg mb-4">Contato</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-2">
-                <MapPin size={20} className="mt-1 flex-shrink-0" />
-                <span className="text-sm">Curralinho, Pará, Brasil</span>
+            <h3 className="mb-4">Contato</h3>
+            <ul className="space-y-3 opacity-90">
+              <li className="flex items-start gap-2">
+                <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" aria-hidden="true" />
+                <span className="text-sm">
+                  Rua da Solidariedade, 123<br />
+                  Centro, São Paulo - SP
+                </span>
               </li>
-              <li className="flex items-center space-x-2">
-                <Phone size={20} className="flex-shrink-0" />
-                <span className="text-sm">(91) 99999-9999</span>
+              <li>
+                <a 
+                  href="tel:+551133334444" 
+                  className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                >
+                  <Phone className="h-5 w-5" aria-hidden="true" />
+                  <span className="text-sm">(11) 3333-4444</span>
+                </a>
               </li>
-              <li className="flex items-center space-x-2">
-                <Mail size={20} className="flex-shrink-0" />
-                <span className="text-sm">contato@arquice.org</span>
+              <li>
+                <a 
+                  href="mailto:contato@osc.org.br" 
+                  className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                >
+                  <Mail className="h-5 w-5" aria-hidden="true" />
+                  <span className="text-sm">contato@osc.org.br</span>
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-secondary-foreground/20 mt-8 pt-8 text-center text-sm text-secondary-foreground/60">
-          <p>
-            © {new Date().getFullYear()} ARQUICE - Todos os direitos reservados. CNPJ: 00.000.000/0000-00
+        <div className="border-t border-primary-foreground/20 pt-8 text-center">
+          <p className="text-sm opacity-90">
+            © {currentYear} OSC Transformando Vidas. Todos os direitos reservados.
+          </p>
+          <p className="text-sm opacity-75 mt-2">
+            CNPJ: 00.000.000/0001-00 | Utilidade Pública Municipal
           </p>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
