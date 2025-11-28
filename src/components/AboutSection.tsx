@@ -1,6 +1,9 @@
 import { Card, CardContent } from "./ui/card";
 import { Award, Eye, Target, Users } from "lucide-react";
-import AboutPicture from "../assets/AboutPicture.jpg"
+import { IMAGES } from "../config/siteConfig";
+import { getImagePath } from "../utils/imageLoader";
+
+const AboutPicture = getImagePath(IMAGES.about);
 
 export function AboutSection() {
   const values = [

@@ -1,8 +1,15 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Spool, Heart } from "lucide-react";
+import { useScrollToSection } from "../hooks/useScrollToSection";
 
 export function ProjectsSection() {
+  const { scrollToSection } = useScrollToSection();
+
+  const handleDonateClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    scrollToSection("#doacoes");
+  };
   const projects = [
     {
       icon: Spool,
@@ -60,7 +67,7 @@ export function ProjectsSection() {
                 </CardContent>
                 <CardFooter>
                   <Button className="w-full" asChild>
-                    <a href="#doacoes">Contribuir com este Projeto</a>
+                    <a href="#doacoes" onClick={handleDonateClick}>Contribuir com este Projeto</a>
                   </Button>
                 </CardFooter>
               </Card>

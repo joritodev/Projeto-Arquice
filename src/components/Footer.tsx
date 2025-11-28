@@ -1,7 +1,24 @@
+import { Link } from "react-router-dom";
 import { Heart, Facebook, Instagram, Linkedin, Youtube, Mail, MapPin, Phone } from "lucide-react";
+import { useScrollToSection } from "../hooks/useScrollToSection";
+import { 
+  ORG_NAME, 
+  ORG_DESCRIPTION, 
+  ORG_CNPJ, 
+  CONTACT_EMAIL, 
+  CONTACT_PHONE, 
+  CONTACT_ADDRESS,
+  SOCIAL_MEDIA 
+} from "../config/siteConfig";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const { scrollToSection } = useScrollToSection();
+
+  const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    e.preventDefault();
+    scrollToSection(hash);
+  };
 
   return (
     <footer className="bg-primary text-primary-foreground" role="contentinfo">
@@ -11,38 +28,45 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Heart className="h-8 w-8 fill-current" aria-hidden="true" />
-              <span className="text-xl">OSC Transformando Vidas</span>
+              <span className="text-xl">{ORG_NAME}</span>
             </div>
             <p className="opacity-90 mb-4">
-              Organização comprometida com a transformação social através da educação, 
-              inclusão e desenvolvimento humano.
+              {ORG_DESCRIPTION}
             </p>
             <div className="flex gap-3">
               <a 
-                href="#facebook" 
+                href={SOCIAL_MEDIA.facebook} 
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Facebook"
+                target={SOCIAL_MEDIA.facebook.startsWith("http") ? "_blank" : undefined}
+                rel={SOCIAL_MEDIA.facebook.startsWith("http") ? "noopener noreferrer" : undefined}
               >
                 <Facebook className="h-5 w-5" aria-hidden="true" />
               </a>
               <a 
-                href="#instagram" 
+                href={SOCIAL_MEDIA.instagram} 
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Instagram"
+                target={SOCIAL_MEDIA.instagram.startsWith("http") ? "_blank" : undefined}
+                rel={SOCIAL_MEDIA.instagram.startsWith("http") ? "noopener noreferrer" : undefined}
               >
                 <Instagram className="h-5 w-5" aria-hidden="true" />
               </a>
               <a 
-                href="#linkedin" 
+                href={SOCIAL_MEDIA.linkedin} 
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="LinkedIn"
+                target={SOCIAL_MEDIA.linkedin.startsWith("http") ? "_blank" : undefined}
+                rel={SOCIAL_MEDIA.linkedin.startsWith("http") ? "noopener noreferrer" : undefined}
               >
                 <Linkedin className="h-5 w-5" aria-hidden="true" />
               </a>
               <a 
-                href="#youtube" 
+                href={SOCIAL_MEDIA.youtube} 
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="YouTube"
+                target={SOCIAL_MEDIA.youtube.startsWith("http") ? "_blank" : undefined}
+                rel={SOCIAL_MEDIA.youtube.startsWith("http") ? "noopener noreferrer" : undefined}
               >
                 <Youtube className="h-5 w-5" aria-hidden="true" />
               </a>
@@ -54,19 +78,36 @@ export function Footer() {
             <h3 className="mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#sobre" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
+                <a 
+                  href="#sobre" 
+                  onClick={(e) => handleHashClick(e, "#sobre")}
+                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                >
                   Quem Somos
                 </a>
               </li>
               <li>
-                <a href="#projetos" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
+                <a 
+                  href="#projetos" 
+                  onClick={(e) => handleHashClick(e, "#projetos")}
+                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                >
                   Projetos
                 </a>
               </li>
               <li>
-                <a href="#doacoes" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
+                <a 
+                  href="#doacoes" 
+                  onClick={(e) => handleHashClick(e, "#doacoes")}
+                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                >
                   Como Doar
                 </a>
+              </li>
+              <li>
+                <Link to="/privacidade" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
+                  Política de Privacidade
+                </Link>
               </li>
             </ul>
           </div>
@@ -78,26 +119,26 @@ export function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" aria-hidden="true" />
                 <span className="text-sm">
-                  Rua da Solidariedade, 123<br />
-                  Centro, São Paulo - SP
+                  {CONTACT_ADDRESS.street}<br />
+                  {CONTACT_ADDRESS.neighborhood}, {CONTACT_ADDRESS.city} - {CONTACT_ADDRESS.state}
                 </span>
               </li>
               <li>
                 <a 
-                  href="tel:+551133334444" 
+                  href={`tel:${CONTACT_PHONE.replace(/\D/g, "")}`}
                   className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
                   <Phone className="h-5 w-5" aria-hidden="true" />
-                  <span className="text-sm">(11) 3333-4444</span>
+                  <span className="text-sm">{CONTACT_PHONE}</span>
                 </a>
               </li>
               <li>
                 <a 
-                  href="mailto:contato@osc.org.br" 
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
                   <Mail className="h-5 w-5" aria-hidden="true" />
-                  <span className="text-sm">contato@osc.org.br</span>
+                  <span className="text-sm">{CONTACT_EMAIL}</span>
                 </a>
               </li>
             </ul>
@@ -106,10 +147,20 @@ export function Footer() {
 
         <div className="border-t border-primary-foreground/20 pt-8 text-center">
           <p className="text-sm opacity-90">
-            © {currentYear} OSC Transformando Vidas. Todos os direitos reservados.
+            © {currentYear} {ORG_NAME}. Todos os direitos reservados.
           </p>
           <p className="text-sm opacity-75 mt-2">
-            CNPJ: 00.000.000/0001-00 | Utilidade Pública Municipal
+            CNPJ: {ORG_CNPJ} | Utilidade Pública Municipal
+          </p>
+          <p className="text-xs opacity-60 mt-2">
+            <Link 
+              to="/privacidade" 
+              className="hover:opacity-100 transition-opacity underline"
+            >
+              Política de Privacidade
+            </Link>
+            {" | "}
+            Conforme LGPD (Lei 13.709/2018)
           </p>
         </div>
       </div>

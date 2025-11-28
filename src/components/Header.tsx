@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
-import Logo from "../assets/Logo.png"
+import { IMAGES } from "../config/siteConfig";
+import { useScrollToSection } from "../hooks/useScrollToSection";
+import { getImagePath } from "../utils/imageLoader";
+
+const Logo = getImagePath(IMAGES.logo);
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollToSection } = useScrollToSection();
 
   const navigation = [
     { name: "Início", href: "#home" },
@@ -16,26 +22,28 @@ export function Header() {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setMobileMenuOpen(false);
-    }
+    scrollToSection(href);
+    setMobileMenuOpen(false);
+  };
+
+  const handleDonateClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    scrollToSection("#doacoes");
+    setMobileMenuOpen(false);
   };
 
   return (
     <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <nav className="container mx-auto px-4 py-4" role="navigation" aria-label="Navegação Principal">
         <div className="flex items-center justify-between">
-          <a 
-            href="#home" 
+          <Link 
+            to="/" 
             className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-ring rounded"
-            onClick={(e) => handleNavClick(e, "#home")}
             aria-label="Página inicial da OSC"
           >
             <img src={Logo} alt="Logo da OSC" className="h-12 w-16" />
             <span className="sr-only">Arquice</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
@@ -57,7 +65,7 @@ export function Header() {
               asChild
               aria-label="Fazer doação agora"
             >
-              <a href="#doacoes">Doar Agora</a>
+              <a href="#doacoes" onClick={handleDonateClick}>Doar Agora</a>
             </Button>
           </div>
 
@@ -93,7 +101,7 @@ export function Header() {
                 </a>
               ))}
               <Button size="lg" className="w-full mt-2" asChild>
-                <a href="#doacoes">Doar Agora</a>
+                <a href="#doacoes" onClick={handleDonateClick}>Doar Agora</a>
               </Button>
             </div>
           </div>

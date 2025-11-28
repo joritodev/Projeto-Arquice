@@ -1,5 +1,8 @@
 import { Target, Heart, Lightbulb } from "lucide-react";
-import CausePicture from "../assets/SocialCausePicture.jpg"
+import { IMAGES } from "../config/siteConfig";
+import { getImagePath } from "../utils/imageLoader";
+
+const CausePicture = getImagePath(IMAGES.cause);
 
 export function CauseSection() {
   return (

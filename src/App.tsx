@@ -1,13 +1,30 @@
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/Header";
-import { Hero } from "./components/Hero";
-import { CauseSection } from "./components/CauseSection";
-import { ProjectsSection } from "./components/ProjectsSection";
-import { AboutSection } from "./components/AboutSection";
-import { TeamSection } from "./components/TeamSection";
-import { DonationSection } from "./components/DonationSection";
 import { Footer } from "./components/Footer";
+import { HomePage } from "./pages/HomePage";
+import { PrivacyPage } from "./pages/PrivacyPage";
 
-export default function App() {
+function ScrollHandler() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Se há um state com scrollTo, faz scroll após um pequeno delay
+    if (location.state && typeof location.state === "object" && "scrollTo" in location.state) {
+      const sectionId = (location.state as { scrollTo: string }).scrollTo;
+      setTimeout(() => {
+        const element = document.querySelector(`#${sectionId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [location]);
+
+  return null;
+}
+
+function AppContent() {
   return (
     <div className="min-h-screen">
       {/* Skip to main content link for screen readers */}
@@ -18,18 +35,25 @@ export default function App() {
         Pular para o conteúdo principal
       </a>
 
+      <ScrollHandler />
       <Header />
 
       <main id="main-content" role="main">
-        <Hero />
-        <CauseSection />
-        <ProjectsSection />
-        <AboutSection />
-        <TeamSection />
-        <DonationSection />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/privacidade" element={<PrivacyPage />} />
+        </Routes>
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }

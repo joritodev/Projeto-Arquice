@@ -1,8 +1,24 @@
 import { Button } from "./ui/button";
 import { ArrowRight, Heart } from "lucide-react";
-import Banner from "../assets/BannerPicture.jpg"
+import { IMAGES } from "../config/siteConfig";
+import { useScrollToSection } from "../hooks/useScrollToSection";
+import { getImagePath } from "../utils/imageLoader";
+
+const Banner = getImagePath(IMAGES.banner);
 
 export function Hero() {
+  const { scrollToSection } = useScrollToSection();
+
+  const handleDonateClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    scrollToSection("#doacoes");
+  };
+
+  const handleProjectsClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    scrollToSection("#projetos");
+  };
+
   return (
     <section 
       id="home" 
@@ -25,7 +41,7 @@ export function Hero() {
                 className="text-lg px-8 py-6"
                 asChild
               >
-                <a href="#doacoes" className="flex items-center gap-2">
+                <a href="#doacoes" onClick={handleDonateClick} className="flex items-center gap-2">
                   <Heart className="h-5 w-5" aria-hidden="true" />
                   Fazer Doação
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
@@ -37,7 +53,7 @@ export function Hero() {
                 className="text-lg px-8 py-6"
                 asChild
               >
-                <a href="#projetos">Conheça Nossos Projetos</a>
+                <a href="#projetos" onClick={handleProjectsClick}>Conheça Nossos Projetos</a>
               </Button>
             </div>
           </div>
