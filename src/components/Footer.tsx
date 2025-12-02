@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Heart, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { useScrollToSection } from "../hooks/useScrollToSection";
 import {
   ORG_NAME,
