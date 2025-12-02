@@ -1,21 +1,24 @@
 import { Link } from "react-router-dom";
-import { Heart, Facebook, Instagram, Linkedin, Youtube, Mail, MapPin, Phone } from "lucide-react";
+import { Heart, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { useScrollToSection } from "../hooks/useScrollToSection";
-import { 
-  ORG_NAME, 
-  ORG_DESCRIPTION, 
-  ORG_CNPJ, 
-  CONTACT_EMAIL, 
-  CONTACT_PHONE, 
+import {
+  ORG_NAME,
+  ORG_DESCRIPTION,
+  ORG_CNPJ,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
   CONTACT_ADDRESS,
-  SOCIAL_MEDIA 
+  SOCIAL_MEDIA,
 } from "../config/siteConfig";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const { scrollToSection } = useScrollToSection();
 
-  const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+  const handleHashClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    hash: string
+  ) => {
     e.preventDefault();
     scrollToSection(hash);
   };
@@ -26,49 +29,43 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Logo e Descrição */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <Heart className="h-8 w-8 fill-current" aria-hidden="true" />
-              <span className="text-xl">{ORG_NAME}</span>
-            </div>
-            <p className="opacity-90 mb-4">
-              {ORG_DESCRIPTION}
-            </p>
+            <span className="text-xl">{ORG_NAME}</span>
+            <br />
+            <p className="opacity-90 mb-4">{ORG_DESCRIPTION}</p>
             <div className="flex gap-3">
-              <a 
-                href={SOCIAL_MEDIA.facebook} 
+              <a
+                href={SOCIAL_MEDIA.facebook}
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Facebook"
-                target={SOCIAL_MEDIA.facebook.startsWith("http") ? "_blank" : undefined}
-                rel={SOCIAL_MEDIA.facebook.startsWith("http") ? "noopener noreferrer" : undefined}
+                target={
+                  SOCIAL_MEDIA.facebook.startsWith("http")
+                    ? "_blank"
+                    : undefined
+                }
+                rel={
+                  SOCIAL_MEDIA.facebook.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
               >
                 <Facebook className="h-5 w-5" aria-hidden="true" />
               </a>
-              <a 
-                href={SOCIAL_MEDIA.instagram} 
+              <a
+                href={SOCIAL_MEDIA.instagram}
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Instagram"
-                target={SOCIAL_MEDIA.instagram.startsWith("http") ? "_blank" : undefined}
-                rel={SOCIAL_MEDIA.instagram.startsWith("http") ? "noopener noreferrer" : undefined}
+                target={
+                  SOCIAL_MEDIA.instagram.startsWith("http")
+                    ? "_blank"
+                    : undefined
+                }
+                rel={
+                  SOCIAL_MEDIA.instagram.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
               >
                 <Instagram className="h-5 w-5" aria-hidden="true" />
-              </a>
-              <a 
-                href={SOCIAL_MEDIA.linkedin} 
-                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
-                aria-label="LinkedIn"
-                target={SOCIAL_MEDIA.linkedin.startsWith("http") ? "_blank" : undefined}
-                rel={SOCIAL_MEDIA.linkedin.startsWith("http") ? "noopener noreferrer" : undefined}
-              >
-                <Linkedin className="h-5 w-5" aria-hidden="true" />
-              </a>
-              <a 
-                href={SOCIAL_MEDIA.youtube} 
-                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
-                aria-label="YouTube"
-                target={SOCIAL_MEDIA.youtube.startsWith("http") ? "_blank" : undefined}
-                rel={SOCIAL_MEDIA.youtube.startsWith("http") ? "noopener noreferrer" : undefined}
-              >
-                <Youtube className="h-5 w-5" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -78,8 +75,8 @@ export function Footer() {
             <h3 className="mb-4">Links Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <a 
-                  href="#sobre" 
+                <a
+                  href="#sobre"
                   onClick={(e) => handleHashClick(e, "#sobre")}
                   className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
@@ -87,8 +84,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#projetos" 
+                <a
+                  href="#projetos"
                   onClick={(e) => handleHashClick(e, "#projetos")}
                   className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
@@ -96,8 +93,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#doacoes" 
+                <a
+                  href="#doacoes"
                   onClick={(e) => handleHashClick(e, "#doacoes")}
                   className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
@@ -105,7 +102,10 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link to="/privacidade" className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded">
+                <Link
+                  to="/privacidade"
+                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                >
                   Política de Privacidade
                 </Link>
               </li>
@@ -117,14 +117,19 @@ export function Footer() {
             <h3 className="mb-4">Contato</h3>
             <ul className="space-y-3 opacity-90">
               <li className="flex items-start gap-2">
-                <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" aria-hidden="true" />
+                <MapPin
+                  className="h-5 w-5 mt-0.5 flex-shrink-0"
+                  aria-hidden="true"
+                />
                 <span className="text-sm">
-                  {CONTACT_ADDRESS.street}<br />
-                  {CONTACT_ADDRESS.neighborhood}, {CONTACT_ADDRESS.city} - {CONTACT_ADDRESS.state}
+                  {CONTACT_ADDRESS.street}
+                  <br />
+                  {CONTACT_ADDRESS.neighborhood}, {CONTACT_ADDRESS.city} -{" "}
+                  {CONTACT_ADDRESS.state}
                 </span>
               </li>
               <li>
-                <a 
+                <a
                   href={`tel:${CONTACT_PHONE.replace(/\D/g, "")}`}
                   className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
@@ -133,7 +138,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a 
+                <a
                   href={`mailto:${CONTACT_EMAIL}`}
                   className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
                 >
@@ -153,8 +158,8 @@ export function Footer() {
             CNPJ: {ORG_CNPJ} | Utilidade Pública Municipal
           </p>
           <p className="text-xs opacity-60 mt-2">
-            <Link 
-              to="/privacidade" 
+            <Link
+              to="/privacidade"
               className="hover:opacity-100 transition-opacity underline"
             >
               Política de Privacidade

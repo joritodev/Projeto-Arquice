@@ -51,7 +51,6 @@ export function DonationSection() {
     setSubmitError(null);
 
     try {
-      // Preparar mensagem formatada para a organização (texto puro bem organizado)
       const messageToOrg = `
 ═══════════════════════════════════════════════════════════
     🎉 NOVA INSCRIÇÃO DE VOLUNTÁRIO
@@ -292,19 +291,22 @@ Este é um email automático, por favor não responda.
                             onCheckedChange={(checked) => setConsentGiven(checked === true)}
                             required
                             aria-required="true"
+                            className="mt-0.5 flex-shrink-0"
                           />
                           <Label 
                             htmlFor="consent" 
-                            className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="text-sm font-normal leading-tight peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex-1"
                           >
-                            Aceito os{" "}
-                            <Link 
-                              to="/privacidade" 
-                              className="text-primary underline hover:text-primary/80"
-                            >
-                              termos de privacidade
-                            </Link>
-                            {" "}e autorizo o tratamento dos meus dados pessoais conforme a LGPD. *
+                            <span className="whitespace-normal">
+                              Aceito os{" "}
+                              <Link 
+                                to="/privacidade" 
+                                className="text-primary underline hover:text-primary/80 inline"
+                              >
+                                termos de privacidade
+                              </Link>
+                              {" "}e autorizo o tratamento dos meus dados pessoais conforme a LGPD. *
+                            </span>
                           </Label>
                         </div>
                         <Button 
@@ -473,19 +475,22 @@ Este é um email automático, por favor não responda.
                           onCheckedChange={(checked) => setVolConsentGiven(checked === true)}
                           required
                           aria-required="true"
+                          className="mt-0.5 flex-shrink-0"
                         />
                         <Label 
                           htmlFor="vol-consent" 
-                          className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm font-normal leading-tight peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex-1"
                         >
+                          <span className="whitespace-normal">
                             Aceito os{" "}
                             <Link 
                               to="/privacidade" 
-                              className="text-primary underline hover:text-primary/80"
+                              className="text-primary underline hover:text-primary/80 inline"
                             >
                               termos de privacidade
                             </Link>
                             {" "}e autorizo o tratamento dos meus dados pessoais conforme a LGPD. *
+                          </span>
                         </Label>
                       </div>
 

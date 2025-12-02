@@ -21,10 +21,10 @@
 
 // Email para receber os formulários de voluntários
 // Este email receberá as informações quando alguém se inscrever
-export const ORG_EMAIL = "joaogamer602.br@gmail.com";
+export const ORG_EMAIL = "solangemarialima871@gmail.com";
 
 // Email público para contato (aparece no rodapé e política de privacidade)
-export const CONTACT_EMAIL = "girlianec05@gmail.com";
+export const CONTACT_EMAIL = "solangemarialima871@gmail.com";
 
 // ═══════════════════════════════════════════════════════════
 // 💰 PIX - DOAÇÕES
@@ -39,30 +39,30 @@ export const PIX_KEY = "00020126580014BR.GOV.BCB.PIX013674dc9547-d94c-4d52-a48f-
 // ═══════════════════════════════════════════════════════════
 
 // Nome da organização (aparece no rodapé)
-export const ORG_NAME = "OSC Transformando Vidas";
+export const ORG_NAME = "Arquice";
 
 // Nome completo da organização (aparece em emails)
-export const ORG_FULL_NAME = "Associação Remanescente Quilombola de Curralinho Morrinhos";
+export const ORG_FULL_NAME = "Associação Comunitária de Moradores Remanescentes Quilombolas de Curralinhos Morrinhos";
 
 // Descrição curta da organização (aparece no rodapé)
 export const ORG_DESCRIPTION = "Organização comprometida com a transformação social através da educação, inclusão e desenvolvimento humano.";
 
 // CNPJ da organização
-export const ORG_CNPJ = "00.000.000/0001-00";
+export const ORG_CNPJ = "33.018.533/0001-50";
 
 // ═══════════════════════════════════════════════════════════
 // 📞 CONTATO
 // ═══════════════════════════════════════════════════════════
 
 // Telefone para contato (formato: (00) 00000-0000)
-export const CONTACT_PHONE = "(11) 3333-4444";
+export const CONTACT_PHONE = "(88) 99603-1103";
 
 // Endereço completo
 export const CONTACT_ADDRESS = {
-  street: "Rua da Solidariedade, 123",
-  neighborhood: "Centro",
-  city: "São Paulo",
-  state: "SP"
+  street: "Comunidade Negra Quilombola de Curralinho Morrinhos",
+  neighborhood: "Zona Rural",
+  city: "Morrinhos",
+  state: "CE"
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -76,7 +76,7 @@ export const CONTACT_ADDRESS = {
 
 export const SOCIAL_MEDIA = {
   facebook: "#facebook",
-  instagram: "#instagram",
+  instagram: "https://www.instagram.com/arquice_/",
 };
 
 // ═══════════════════════════════════════════════════════════

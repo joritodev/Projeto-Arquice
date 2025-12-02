@@ -85,4 +85,13 @@
 
 html {
   font-size: var(--font-size);
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
+#root {
+  min-height: 100vh;
 }
