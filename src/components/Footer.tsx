@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { useScrollToSection } from "../hooks/useScrollToSection";
 import {
   ORG_NAME,
@@ -33,23 +33,6 @@ export function Footer() {
             <br />
             <p className="opacity-90 mb-4">{ORG_DESCRIPTION}</p>
             <div className="flex gap-3">
-              <a
-                href={SOCIAL_MEDIA.facebook}
-                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
-                aria-label="Facebook"
-                target={
-                  SOCIAL_MEDIA.facebook.startsWith("http")
-                    ? "_blank"
-                    : undefined
-                }
-                rel={
-                  SOCIAL_MEDIA.facebook.startsWith("http")
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-              >
-                <Facebook className="h-5 w-5" aria-hidden="true" />
-              </a>
               <a
                 href={SOCIAL_MEDIA.instagram}
                 className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"

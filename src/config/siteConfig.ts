@@ -75,7 +75,6 @@ export const CONTACT_ADDRESS = {
 // - Exemplo: export const FACEBOOK_URL = "https://www.facebook.com/arquice";
 
 export const SOCIAL_MEDIA = {
-  facebook: "#facebook",
   instagram: "https://www.instagram.com/arquice_/",
 };
 
