@@ -116,12 +116,12 @@ export function Footer() {
           <div>
             <h3 className="mb-4">Contato</h3>
             <ul className="space-y-3 opacity-90">
-              <li className="flex items-start gap-2">
+              <li className="flex items-start gap-3">
                 <MapPin
                   className="h-5 w-5 mt-0.5 flex-shrink-0"
                   aria-hidden="true"
                 />
-                <span className="text-sm">
+                <span className="text-sm leading-relaxed">
                   {CONTACT_ADDRESS.street}
                   <br />
                   {CONTACT_ADDRESS.neighborhood}, {CONTACT_ADDRESS.city} -{" "}
