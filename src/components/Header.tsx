@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { IMAGES } from "../config/siteConfig";
@@ -32,18 +31,24 @@ export function Header() {
     setMobileMenuOpen(false);
   };
 
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    scrollToSection("#home");
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <nav className="container mx-auto px-4 py-4" role="navigation" aria-label="Navegação Principal">
         <div className="flex items-center justify-between">
-          <Link 
-            to="/" 
+          <a 
+            href="#home" 
+            onClick={handleLogoClick}
             className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-ring rounded"
             aria-label="Página inicial da OSC"
           >
-            <img src={Logo} alt="Logo da OSC" className="h-12 w-16" />
-            <span className="sr-only">Arquice</span>
-          </Link>
+            <img src={Logo} alt="Logo da OSC" className="h-12 w-16"	/>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
