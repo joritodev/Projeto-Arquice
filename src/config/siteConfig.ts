@@ -99,3 +99,22 @@ export const IMAGES = {
   cause: "SocialCausePicture.jpg"
 };
 
+// ═══════════════════════════════════════════════════════════
+// 🔖 FAVICON
+// ═══════════════════════════════════════════════════════════
+// 
+// Caminho do favicon (ícone que aparece na aba do navegador)
+// 
+// IMPORTANTE: O arquivo do favicon DEVE estar na pasta: public/
+// Formatos suportados: .ico, .png, .svg
+// 
+// Exemplos:
+// - Se o arquivo for "favicon.ico" na pasta public/ → use "/favicon.ico"
+// - Se o arquivo for "Logo.ico" na pasta public/ → use "/Logo.ico"
+// - Se o arquivo for "icon.png" na pasta public/ → use "/icon.png"
+// 
+// DICA: Você pode usar o Logo.png convertido para favicon
+// ou criar um ícone personalizado. Lembre-se de colocar na pasta public/
+
+export const FAVICON_PATH = "/Logo.ico";
+
