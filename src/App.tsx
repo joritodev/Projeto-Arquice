@@ -1,9 +1,11 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { HomePage } from "./pages/HomePage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { AdminSiteConfigPage } from "./pages/AdminSiteConfigPage";
+import { ADMIN_SITE_CONFIG_PATH } from "./admin/constants";
 
 function ScrollHandler() {
   const location = useLocation();
@@ -24,7 +26,7 @@ function ScrollHandler() {
   return null;
 }
 
-function AppContent() {
+function PublicLayout() {
   return (
     <div className="min-h-screen">
       {/* Skip to main content link for screen readers */}
@@ -39,14 +41,23 @@ function AppContent() {
       <Header />
 
       <main id="main-content" role="main">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/privacidade" element={<PrivacyPage />} />
-        </Routes>
+        <Outlet />
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+function AppContent() {
+  return (
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/privacidade" element={<PrivacyPage />} />
+      </Route>
+      <Route path={ADMIN_SITE_CONFIG_PATH} element={<AdminSiteConfigPage />} />
+    </Routes>
   );
 }
 
