@@ -172,7 +172,7 @@ export function AdminSiteConfigPage() {
           <div>
             <h1 className="text-xl font-semibold tracking-tight">Administração — Site</h1>
             <p className="text-sm text-muted-foreground">
-              Edição dos dados espelhados em <code className="text-xs">src/config/siteConfig.ts</code>
+              Edição dos dados espelhados
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
