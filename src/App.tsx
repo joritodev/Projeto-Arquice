@@ -5,6 +5,9 @@ import { Footer } from "./components/Footer";
 import { HomePage } from "./pages/HomePage";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { AdminSiteConfigPage } from "./pages/AdminSiteConfigPage";
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 import { ADMIN_SITE_CONFIG_PATH } from "./admin/constants";
 
 function ScrollHandler() {
@@ -56,15 +59,22 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/privacidade" element={<PrivacyPage />} />
       </Route>
-      <Route path={ADMIN_SITE_CONFIG_PATH} element={<AdminSiteConfigPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path={ADMIN_SITE_CONFIG_PATH} element={
+        <ProtectedRoute>
+          <AdminSiteConfigPage />
+        </ProtectedRoute>
+      } />
     </Routes>
   );
 }
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
