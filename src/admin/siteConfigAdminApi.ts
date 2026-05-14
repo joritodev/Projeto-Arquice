@@ -125,20 +125,28 @@ export async function getSiteConfig(): Promise<SiteConfigPayload> {
  *
  * Exige `VITE_ADMIN_API_BASE_URL` definido; caso contrário lança erro (guardar sem API não tem efeito no site público).
  */
-export async function saveSiteConfig(payload: SiteConfigPayload): Promise<void> {
-  const url = assertApiConfigured();
+export async function saveSiteConfig(data: any) {
+  const token = localStorage.getItem("token");
 
-  const res = await fetch(url, {
+  const res = await fetch(`${getAdminApiBaseUrl()}/api/site-config`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(data),
   });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`PUT falhou (${res.status}): ${text || res.statusText}`);
+    const text = await res.text();
+    throw new Error(text || "Erro ao salvar config");
   }
+  
+  const contentType = res.headers.get("content-type");
+
+  if (contentType?.includes("application/json")) {
+    return await res.json();
+  }
+
+  return null;
 }
