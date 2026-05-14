@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import { Button } from "../components/ui/button";
@@ -10,6 +10,7 @@ import { Textarea } from "../components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { getAdminApiBaseUrl, getSiteConfig, saveSiteConfig } from "../admin/siteConfigAdminApi";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "../admin/siteConfigPayload";
+import { useAuth } from "../contexts/AuthContext";
 
 const emailPattern = {
   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -24,6 +25,8 @@ function FieldError({ message }: { message?: string }) {
 export function AdminSiteConfigPage() {
   const [initializing, setInitializing] = useState(true);
   const apiBase = getAdminApiBaseUrl();
+  const { logout, token } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm<SiteConfigPayload>({
     defaultValues: defaultsFromSiteConfig(),
@@ -70,6 +73,86 @@ export function AdminSiteConfigPage() {
     };
   }, [reset]);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const handleChangePassword = async () => {
+    const currentPassword = (document.getElementById('currentPassword') as HTMLInputElement)?.value;
+    const newPassword = (document.getElementById('newPassword') as HTMLInputElement)?.value;
+    const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement)?.value;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error('Preencha todos os campos.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error('Nova senha e confirmação não coincidem.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/change-password', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erro ao alterar senha.');
+      }
+
+      toast.success('Senha alterada com sucesso.');
+      // Limpar campos
+      (document.getElementById('currentPassword') as HTMLInputElement).value = '';
+      (document.getElementById('newPassword') as HTMLInputElement).value = '';
+      (document.getElementById('confirmPassword') as HTMLInputElement).value = '';
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Erro ao alterar senha.';
+      toast.error(msg);
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    const newEmail = (document.getElementById('newEmail') as HTMLInputElement)?.value;
+    const password = (document.getElementById('passwordForEmail') as HTMLInputElement)?.value;
+
+    if (!newEmail || !password) {
+      toast.error('Preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/change-email', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ newEmail, password }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erro ao alterar email.');
+      }
+
+      toast.success('Email alterado com sucesso.');
+      // Limpar campos
+      (document.getElementById('newEmail') as HTMLInputElement).value = '';
+      (document.getElementById('passwordForEmail') as HTMLInputElement).value = '';
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Erro ao alterar email.';
+      toast.error(msg);
+    }
+  };
+
   const onSave = handleSubmit(async (data) => {
     try {
       await saveSiteConfig(data);
@@ -99,6 +182,9 @@ export function AdminSiteConfigPage() {
             <Button type="submit" form="admin-site-config-form" disabled={initializing || isSubmitting}>
               {isSubmitting ? "A guardar…" : "Guardar"}
             </Button>
+            <Button type="button" variant="destructive" onClick={handleLogout}>
+              Logout
+            </Button>
           </div>
         </div>
       </header>
@@ -127,6 +213,7 @@ export function AdminSiteConfigPage() {
               <TabsTrigger value="redes">Redes</TabsTrigger>
               <TabsTrigger value="imagens">Imagens</TabsTrigger>
               <TabsTrigger value="favicon">Favicon</TabsTrigger>
+              <TabsTrigger value="conta">Conta</TabsTrigger>
             </TabsList>
 
             <TabsContent value="emails">
@@ -308,6 +395,49 @@ export function AdminSiteConfigPage() {
                   <Label htmlFor="faviconPath">Caminho</Label>
                   <Input id="faviconPath" {...register("faviconPath", { required: "Obrigatório" })} />
                   <FieldError message={errors.faviconPath?.message} />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="conta">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Conta Admin</CardTitle>
+                  <CardDescription>Alterar senha e email da conta administrativa.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium">Alterar Senha</h3>
+                    <div className="space-y-4 mt-4">
+                      <div>
+                        <Label htmlFor="currentPassword">Senha Atual</Label>
+                        <Input id="currentPassword" type="password" />
+                      </div>
+                      <div>
+                        <Label htmlFor="newPassword">Nova Senha</Label>
+                        <Input id="newPassword" type="password" />
+                      </div>
+                      <div>
+                        <Label htmlFor="confirmPassword">Confirmar Nova Senha</Label>
+                        <Input id="confirmPassword" type="password" />
+                      </div>
+                      <Button type="button" onClick={handleChangePassword}>Alterar Senha</Button>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium">Alterar Email</h3>
+                    <div className="space-y-4 mt-4">
+                      <div>
+                        <Label htmlFor="newEmail">Novo Email</Label>
+                        <Input id="newEmail" type="email" />
+                      </div>
+                      <div>
+                        <Label htmlFor="passwordForEmail">Senha Atual</Label>
+                        <Input id="passwordForEmail" type="password" />
+                      </div>
+                      <Button type="button" onClick={handleChangeEmail}>Alterar Email</Button>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
