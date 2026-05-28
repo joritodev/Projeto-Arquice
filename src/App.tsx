@@ -6,6 +6,8 @@ import { HomePage } from "./pages/HomePage";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { AdminSiteConfigPage } from "./pages/AdminSiteConfigPage";
 import LoginPage from "./pages/LoginPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ADMIN_SITE_CONFIG_PATH } from "./admin/constants";
@@ -60,6 +62,8 @@ function AppContent() {
         <Route path="/privacidade" element={<PrivacyPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path={ADMIN_SITE_CONFIG_PATH} element={
         <ProtectedRoute>
           <AdminSiteConfigPage />
