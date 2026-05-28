@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
@@ -37,6 +37,7 @@ export function AdminSiteConfigPage() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = form;
 
@@ -150,6 +151,37 @@ export function AdminSiteConfigPage() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Erro ao alterar email.';
       toast.error(msg);
+    }
+  };
+
+  const handleImageUpload = async (
+    e: ChangeEvent<HTMLInputElement>,
+    field: keyof SiteConfigPayload["images"]
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/upload', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro upload');
+      }
+
+      const data = await response.json();
+      setValue(`images.${field}`, data.imageUrl);
+      toast.success('Imagem enviada com sucesso');
+    } catch {
+      toast.error('Erro ao enviar imagem');
     }
   };
 
@@ -363,22 +395,42 @@ export function AdminSiteConfigPage() {
                 <CardContent className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="imgLogo">Logo</Label>
-                    <Input id="imgLogo" {...register("images.logo", { required: "Obrigatório" })} />
+                    <Input
+                      id="imgLogo"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, "logo")}
+                    />
                     <FieldError message={errors.images?.logo?.message} />
                   </div>
                   <div>
                     <Label htmlFor="imgBanner">Banner</Label>
-                    <Input id="imgBanner" {...register("images.banner", { required: "Obrigatório" })} />
+                    <Input
+                      id="imgBanner"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, "banner")}
+                    />
                     <FieldError message={errors.images?.banner?.message} />
                   </div>
                   <div>
                     <Label htmlFor="imgAbout">Sobre</Label>
-                    <Input id="imgAbout" {...register("images.about", { required: "Obrigatório" })} />
+                    <Input
+                      id="imgAbout"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, "about")}
+                    />
                     <FieldError message={errors.images?.about?.message} />
                   </div>
                   <div>
                     <Label htmlFor="imgCause">Causa</Label>
-                    <Input id="imgCause" {...register("images.cause", { required: "Obrigatório" })} />
+                    <Input
+                      id="imgCause"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, "cause")}
+                    />
                     <FieldError message={errors.images?.cause?.message} />
                   </div>
                 </CardContent>
