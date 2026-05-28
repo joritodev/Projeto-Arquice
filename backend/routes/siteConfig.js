@@ -1,31 +1,136 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
+
 const SiteConfig = require('../models/SiteConfig');
+
+const authenticate = require('../middleware/auth');
+const requireAdmin = require('../middleware/admin');
 
 const router = express.Router();
 
-// Middleware to check JWT
-const authenticate = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return res.status(401).json({ error: 'No token' });
-  try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
-    next();
-  } catch (err) {
-    res.status(401).json({ error: 'Invalid token' });
-  }
-};
 
-// GET site config
+// CONFIG MULTER
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+
+  filename: (req, file, cb) => {
+    const uniqueName =
+      Date.now() + '-' + Math.round(Math.random() * 1E9);
+
+    cb(
+      null,
+      uniqueName + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({ storage });
+
+
+// GET SITE CONFIG
 router.get('/', async (req, res) => {
-  const config = await SiteConfig.findOne();
-  res.json(config);
+  try {
+
+    const config = await SiteConfig.findOne();
+
+    res.json(config);
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: 'Server error',
+    });
+
+  }
 });
 
-// PUT site config (protected)
-router.put('/', authenticate, async (req, res) => {
-  const config = await SiteConfig.findOneAndUpdate({}, req.body, { new: true, upsert: true });
-  res.json(config);
-});
+
+// UPLOAD IMAGENS
+router.post(
+  '/upload',
+  authenticate,
+  requireAdmin,
+
+  upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'banner', maxCount: 1 },
+    { name: 'about', maxCount: 1 },
+    { name: 'cause', maxCount: 1 },
+  ]),
+
+  async (req, res) => {
+
+    try {
+
+      const files = req.files;
+
+      const response = {};
+
+      if (files.logo) {
+        response.logo =
+          `/uploads/${files.logo[0].filename}`;
+      }
+
+      if (files.banner) {
+        response.banner =
+          `/uploads/${files.banner[0].filename}`;
+      }
+
+      if (files.about) {
+        response.about =
+          `/uploads/${files.about[0].filename}`;
+      }
+
+      if (files.cause) {
+        response.cause =
+          `/uploads/${files.cause[0].filename}`;
+      }
+
+      res.json(response);
+
+    } catch (err) {
+
+      res.status(500).json({
+        error: 'Erro upload',
+      });
+
+    }
+  }
+);
+
+
+// UPDATE CONFIG
+router.put(
+  '/',
+  authenticate,
+  requireAdmin,
+
+  async (req, res) => {
+
+    try {
+
+      const config = await SiteConfig.findOneAndUpdate(
+        {},
+        req.body,
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+
+      res.json(config);
+
+    } catch (err) {
+
+      res.status(500).json({
+        error: 'Server error',
+      });
+
+    }
+  }
+);
 
 module.exports = router;
