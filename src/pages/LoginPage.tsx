@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate('/adm'); // Redirect to admin page after login
+      navigate('/adm'); 
     } catch (err) {
       setError('Credenciais inválidas');
     }
@@ -54,6 +54,12 @@ const LoginPage: React.FC = () => {
             </div>
             {error && <p className="text-red-500">{error}</p>}
             <Button type="submit" className="w-full">Entrar</Button>
+            
+            <div className="text-center">
+              <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                Esqueci minha senha?
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>
