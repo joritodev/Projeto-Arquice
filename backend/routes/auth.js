@@ -4,18 +4,34 @@ const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 
+const authenticate = require('../middleware/auth');
+const requireAdmin = require('../middleware/admin');
+
 const router = express.Router();
 
-// Middleware to check JWT
-const authenticate = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return res.status(401).json({ error: 'No token' });
-  try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
-    next();
-  } catch (err) {
-    res.status(401).json({ error: 'Invalid token' });
-  }
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '15m',
+    }
+  );
+};
+
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.JWT_REFRESH_SECRET,
+    {
+      expiresIn: '7d',
+    }
+  );
 };
 
 // Email transporter
@@ -49,13 +65,50 @@ router.post('/register', [
 
 // Login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user || !(await user.comparePassword(password))) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({
+      email: email.toLowerCase(),
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        error: 'Invalid credentials',
+      });
+    }
+
+    const validPassword = await user.comparePassword(password);
+
+    if (!validPassword) {
+      return res.status(401).json({
+        error: 'Invalid credentials',
+      });
+    }
+
+    const accessToken = generateAccessToken(user);
+
+    const refreshToken = generateRefreshToken(user);
+
+    user.refreshToken = refreshToken;
+
+    await user.save();
+
+    res.json({
+      accessToken,
+      refreshToken,
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+      },
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      error: 'Server error',
+    });
   }
-  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  res.json({ token });
 });
 
 // Forgot password
@@ -125,6 +178,64 @@ router.put('/change-email', authenticate, async (req, res) => {
     res.json({ message: 'Email changed successfully' });
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Refresh token
+router.post('/refresh-token', async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        error: 'Refresh token required',
+      });
+    }
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    const user = await User.findById(decoded.id);
+
+    if (!user || user.refreshToken !== refreshToken) {
+      return res.status(401).json({
+        error: 'Invalid refresh token',
+      });
+    }
+
+    const newAccessToken = generateAccessToken(user);
+
+    res.json({
+      accessToken: newAccessToken,
+    });
+
+  } catch (err) {
+    res.status(401).json({
+      error: 'Invalid refresh token',
+    });
+  }
+});
+
+// Logout
+router.post('/logout', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (user) {
+      user.refreshToken = null;
+      await user.save();
+    }
+
+    res.json({
+      message: 'Logged out successfully',
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      error: 'Server error',
+    });
   }
 });
 
