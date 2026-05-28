@@ -127,8 +127,9 @@ export async function getSiteConfig(): Promise<SiteConfigPayload> {
  */
 export async function saveSiteConfig(data: any) {
   const token = localStorage.getItem("token");
+  const url = assertApiConfigured();
 
-  const res = await fetch(`${getAdminApiBaseUrl()}/api/site-config`, {
+  const res = await fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
