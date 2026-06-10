@@ -1,3 +1,4 @@
+const dns = require('dns');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,7 +7,12 @@ const path = require('path');
 
 dotenv.config();
 
+// Windows/local DNS often refuses SRV lookups used by mongodb+srv://
+dns.setServers(['8.8.8.8', '1.1.1.1']);
+
 const app = express();
+
+app.set('trust proxy', 1);
 
 app.use(cors({
   origin: [

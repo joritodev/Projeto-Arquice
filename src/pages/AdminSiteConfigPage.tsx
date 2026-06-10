@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { getAdminApiBaseUrl, getSiteConfig, saveSiteConfig } from "../admin/siteConfigAdminApi";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "../admin/siteConfigPayload";
 import { useAuth } from "../contexts/AuthContext";
+import { apiUrl } from "../lib/api";
 
 const emailPattern = {
   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -95,7 +96,7 @@ export function AdminSiteConfigPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/change-password', {
+      const response = await fetch(apiUrl('/api/auth/change-password'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ export function AdminSiteConfigPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/change-email', {
+      const response = await fetch(apiUrl('/api/auth/change-email'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +166,7 @@ export function AdminSiteConfigPage() {
     formData.append('image', file);
 
     try {
-      const response = await fetch('http://localhost:3000/api/upload', {
+      const response = await fetch(apiUrl('/api/upload'), {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
