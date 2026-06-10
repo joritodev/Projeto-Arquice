@@ -14,11 +14,24 @@ const app = express();
 
 app.set('trust proxy', 1);
 
+const corsOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://projeto-arquice.vercel.app',
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://projeto-arquice.vercel.app'
-  ]
+  origin(origin, callback) {
+    if (
+      !origin ||
+      corsOrigins.includes(origin) ||
+      /\.vercel\.app$/.test(origin)
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    }
+  },
 }));
 
 app.use(express.json());
