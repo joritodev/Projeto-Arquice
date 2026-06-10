@@ -7,6 +7,34 @@ export function getAdminApiBaseUrl(): string {
   return getApiBaseUrl();
 }
 
+/** Config ainda não gravada no servidor (GET devolve objeto vazio ou null). */
+function isUnsetSiteConfig(data: SiteConfigPayload): boolean {
+  const scalars = [
+    data.orgEmail,
+    data.contactEmail,
+    data.pixKey,
+    data.orgName,
+    data.orgFullName,
+    data.orgDescription,
+    data.orgCnpj,
+    data.contactPhone,
+    data.faviconPath,
+  ];
+  if (scalars.some((v) => v.trim() !== "")) return false;
+  if (Object.values(data.contactAddress).some((v) => v.trim() !== "")) return false;
+  if (Object.values(data.socialMedia).some((v) => v.trim() !== "")) return false;
+  if (Object.values(data.images).some((v) => v.trim() !== "")) return false;
+  return true;
+}
+
+function resolveSiteConfigPayload(data: unknown): SiteConfigPayload {
+  if (data === null) {
+    return defaultsFromSiteConfig();
+  }
+  const parsed = parseSiteConfigResponse(data);
+  return isUnsetSiteConfig(parsed) ? defaultsFromSiteConfig() : parsed;
+}
+
 function assertApiConfigured(): string {
   const base = getAdminApiBaseUrl();
   if (!base) {
@@ -107,10 +135,7 @@ export async function getSiteConfig(): Promise<SiteConfigPayload> {
   }
 
   const json: unknown = await res.json();
-  if (json === null) {
-    return defaultsFromSiteConfig();
-  }
-  return parseSiteConfigResponse(json);
+  return resolveSiteConfigPayload(json);
 }
 
 /**
