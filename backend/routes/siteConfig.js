@@ -9,6 +9,32 @@ const requireAdmin = require('../middleware/admin');
 
 const router = express.Router();
 
+const emptySiteConfig = {
+  orgEmail: '',
+  contactEmail: '',
+  pixKey: '',
+  orgName: '',
+  orgFullName: '',
+  orgDescription: '',
+  orgCnpj: '',
+  contactPhone: '',
+  contactAddress: {
+    street: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+  },
+  socialMedia: {
+    instagram: '',
+  },
+  images: {
+    logo: '',
+    banner: '',
+    about: '',
+    cause: '',
+  },
+  faviconPath: '',
+};
 
 // CONFIG MULTER
 const storage = multer.diskStorage({
@@ -36,7 +62,7 @@ router.get('/', async (req, res) => {
 
     const config = await SiteConfig.findOne();
 
-    res.json(config);
+    res.json(config ?? emptySiteConfig);
 
   } catch (err) {
 

@@ -107,6 +107,9 @@ export async function getSiteConfig(): Promise<SiteConfigPayload> {
   }
 
   const json: unknown = await res.json();
+  if (json === null) {
+    return defaultsFromSiteConfig();
+  }
   return parseSiteConfigResponse(json);
 }
 
