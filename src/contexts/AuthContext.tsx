@@ -48,10 +48,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     const data = await response.json();
-    const { token } = data;
-    setToken(token);
+    const accessToken = data.accessToken as string | undefined;
+    setToken(accessToken ?? null);
     setIsAuthenticated(true);
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', accessToken ?? '');
   };
 
   const logout = () => {
