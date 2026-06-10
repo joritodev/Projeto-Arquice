@@ -37,8 +37,12 @@ router.post(
       });
     }
 
+    const baseUrl =
+      process.env.API_BASE_URL?.replace(/\/$/, '') ||
+      `${req.protocol}://${req.get('host')}`;
+
     res.json({
-      imageUrl: `http://localhost:3000/uploads/${req.file.filename}`,
+      imageUrl: `${baseUrl}/uploads/${req.file.filename}`,
     });
   }
 );

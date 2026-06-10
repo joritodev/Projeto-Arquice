@@ -1,13 +1,10 @@
 import { SITE_CONFIG_API_PATH } from "./constants";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "./siteConfigPayload";
+import { getApiBaseUrl } from "../lib/api";
 
-/**
- * Base URL da API de administração (sem barra final).
- * Definir em `.env`: `VITE_ADMIN_API_BASE_URL=http://localhost:3000`
- */
+/** @deprecated Use getApiBaseUrl from ../lib/api */
 export function getAdminApiBaseUrl(): string {
-  const raw = import.meta.env.VITE_ADMIN_API_BASE_URL as string | undefined;
-  return typeof raw === "string" ? raw.replace(/\/$/, "") : "";
+  return getApiBaseUrl();
 }
 
 function assertApiConfigured(): string {
