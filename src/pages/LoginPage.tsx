@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
       await login(email, password);
       navigate('/adm'); 
     } catch (err) {
-      setError('Credenciais inválidas');
+      setError(err instanceof Error ? err.message : 'Erro ao fazer login.');
     }
   };
 
