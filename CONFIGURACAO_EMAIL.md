@@ -1,5 +1,7 @@
 # Configuração do Email - Formulário de Voluntário
 
+> Documentação técnica do projeto: [`README.md`](README.md) · Painel admin: [`docs/ADMIN.md`](docs/ADMIN.md)
+
 ## ⚠️ ATENÇÃO: Arquivo de Configuração Mudou!
 
 Agora **TODAS** as configurações do site estão em um único arquivo!

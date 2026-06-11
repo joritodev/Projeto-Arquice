@@ -2,6 +2,8 @@
 
 Este guia foi feito para pessoas que **não têm conhecimento técnico**. Siga os passos abaixo com calma! 😊
 
+> **Alternativa:** se tiver acesso ao painel administrativo, pode editar o site em `/adm` sem alterar código. Ver [`docs/ADMIN.md`](docs/ADMIN.md).
+
 ---
 
 ## 📁 ONDE ESTÁ O ARQUIVO DE CONFIGURAÇÃO?

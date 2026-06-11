@@ -1,84 +1,64 @@
-# Integração backend — configuração do site (admin)
+# Integração backend — painel de administração
 
-Este documento descreve o contrato JSON que o frontend da rota de administração espera do backend. O ficheiro espelhado no código estático é [`src/config/siteConfig.ts`](../config/siteConfig.ts); **hoje o site público ainda lê só esse ficheiro**. Quando o backend estiver pronto, pode passar a ser a fonte de verdade e o site público pode ser alterado noutra tarefa para consumir a API.
+Contrato entre o frontend (`/adm`) e a API Express. O site público ainda lê `src/config/siteConfig.ts` em build; o painel grava no MongoDB.
 
 ## Segurança
 
-- A rota admin é **oculta** (não há link no site), mas **isso não é autenticação**.
-- Recomenda-se proteger `GET`/`PUT` com login, API key ou JWT e enviar `Authorization: Bearer <token>` nos pedidos (o front pode ser estendido para incluir o header quando existir fluxo de login).
+| Endpoint | Autenticação |
+|----------|--------------|
+| `GET /api/site-config` | Público |
+| `PUT /api/site-config` | JWT + role `admin` |
+| `POST /api/upload` | JWT + role `admin` |
+
+A rota `/adm` é oculta (sem link no site), mas protegida no front por `ProtectedRoute` + JWT.
 
 ## Variável de ambiente (frontend)
 
 | Variável | Descrição |
 |----------|-----------|
-| `VITE_ADMIN_API_BASE_URL` | URL base do servidor, **sem** barra final (ex.: `http://localhost:3000`). |
+| `VITE_ADMIN_API_BASE_URL` | URL base do servidor, **sem** barra final |
 
-Copie `.env.example` para `.env` na raiz do projeto Vite e preencha o valor.
+Copie `.env.example` → `.env` na raiz. Em produção (Vercel), defina na dashboard e faça redeploy.
 
-### Comportamento sem `VITE_ADMIN_API_BASE_URL`
+### Sem `VITE_ADMIN_API_BASE_URL`
 
-- **GET (carregar):** o front não chama rede; preenche o formulário com os valores de `siteConfig.ts` (build local).
-- **PUT (guardar):** o front mostra erro a pedir para configurar a variável — não há para onde enviar os dados.
+- **GET:** não chama rede; usa `siteConfig.ts`
+- **PUT:** erro a pedir configuração da variável
 
-## Endpoints sugeridos
+## Endpoints
 
-Constante no front: `SITE_CONFIG_API_PATH = "/api/site-config"` (ver [`constants.ts`](./constants.ts)).
+Constante: `SITE_CONFIG_API_PATH = "/api/site-config"`
 
-| Método | Caminho completo | Corpo | Resposta |
-|--------|------------------|-------|----------|
-| `GET` | `{VITE_ADMIN_API_BASE_URL}/api/site-config` | — | `200` + JSON no formato abaixo |
-| `PUT` | `{VITE_ADMIN_API_BASE_URL}/api/site-config` | JSON no formato abaixo | `200` (opcional: JSON atualizado) ou `204` |
+| Método | URL | Auth | Resposta |
+|--------|-----|------|----------|
+| `GET` | `{base}/api/site-config` | — | `200` + JSON `SiteConfigPayload` ou objeto vazio |
+| `PUT` | `{base}/api/site-config` | Bearer token | `200` + documento actualizado |
+| `POST` | `{base}/api/upload` | Bearer token | `200` + `{ imageUrl }` |
 
-**Headers:**
+### Login
 
-- `Content-Type: application/json` no `PUT`.
-- `Accept: application/json` em ambos.
-- Quando houver auth: `Authorization: Bearer <token>`.
+`POST {base}/api/auth/login` devolve `accessToken` (não `token`). O front guarda em `localStorage` como `token`.
 
 ## Formato JSON (`SiteConfigPayload`)
 
-Todas as chaves em **camelCase** (igual ao TypeScript em [`siteConfigPayload.ts`](./siteConfigPayload.ts)).
+Definido em [`siteConfigPayload.ts`](./siteConfigPayload.ts).
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| `orgEmail` | string | Email que recebe formulários (ex.: voluntários). |
-| `contactEmail` | string | Email público (rodapé, privacidade). |
-| `pixKey` | string | Payload EMV da chave PIX. |
-| `orgName` | string | Nome curto da organização. |
-| `orgFullName` | string | Nome completo. |
-| `orgDescription` | string | Descrição curta. |
-| `orgCnpj` | string | CNPJ formatado ou não. |
-| `contactPhone` | string | Telefone de contacto. |
-| `contactAddress` | object | Ver tabela abaixo. |
-| `socialMedia` | object | Ver tabela abaixo. |
-| `images` | object | Nomes de ficheiro em `src/assets/`. |
-| `faviconPath` | string | Caminho público (ex.: `/Logo.ico`). |
+| `orgEmail` | string | Email que recebe formulários |
+| `contactEmail` | string | Email público |
+| `pixKey` | string | Payload EMV PIX |
+| `orgName` | string | Nome curto |
+| `orgFullName` | string | Nome completo |
+| `orgDescription` | string | Descrição |
+| `orgCnpj` | string | CNPJ |
+| `contactPhone` | string | Telefone |
+| `contactAddress` | object | `street`, `neighborhood`, `city`, `state` |
+| `socialMedia` | object | `instagram` |
+| `images` | object | `logo`, `banner`, `about`, `cause` |
+| `faviconPath` | string | Ex.: `/Logo.ico` |
 
-### `contactAddress`
-
-| Campo | Tipo |
-|-------|------|
-| `street` | string |
-| `neighborhood` | string |
-| `city` | string |
-| `state` | string |
-
-### `socialMedia`
-
-| Campo | Tipo | Notas |
-|-------|------|--------|
-| `instagram` | string | URL completa ou `"#"` se não existir. |
-
-### `images`
-
-| Campo | Tipo |
-|-------|------|
-| `logo` | string |
-| `banner` | string |
-| `about` | string |
-| `cause` | string |
-
-## Exemplo de corpo (GET resposta ou PUT pedido)
+### Exemplo
 
 ```json
 {
@@ -86,12 +66,12 @@ Todas as chaves em **camelCase** (igual ao TypeScript em [`siteConfigPayload.ts`
   "contactEmail": "contact@example.com",
   "pixKey": "00020126...",
   "orgName": "Arquice",
-  "orgFullName": "Associação ...",
-  "orgDescription": "Organização comprometida ...",
+  "orgFullName": "Associação Remanescente Quilombola...",
+  "orgDescription": "Organização comprometida...",
   "orgCnpj": "33.018.533/0001-50",
   "contactPhone": "(88) 99603-1103",
   "contactAddress": {
-    "street": "Comunidade ...",
+    "street": "Comunidade...",
     "neighborhood": "Zona Rural",
     "city": "Morrinhos",
     "state": "CE"
@@ -109,40 +89,31 @@ Todas as chaves em **camelCase** (igual ao TypeScript em [`siteConfigPayload.ts`
 }
 ```
 
-## Validação no servidor
+## Comportamento do GET no frontend
 
-O front valida formato básico de email e campos obrigatórios não vazios. O backend deve validar de novo (tamanhos máximos, formato CNPJ/telefone, sanitização, etc.) e responder **422** com mensagens de erro por campo, se possível (o front hoje mostra o corpo textual da resposta no toast).
+Em [`siteConfigAdminApi.ts`](./siteConfigAdminApi.ts):
 
-## CORS (desenvolvimento)
+1. Se a API devolver `null` ou objeto com **todos** os campos vazios → usa `defaultsFromSiteConfig()` (`siteConfig.ts`)
+2. Se existir configuração gravada → usa dados do servidor
+3. Evita que o formulário fique em branco antes do primeiro Guardar
 
-Com Vite em `http://localhost:5173` (ou outra porta), o browser fará pedidos **cross-origin** para a API. O servidor deve enviar cabeçalhos CORS adequados, por exemplo:
+## CORS
 
-- `Access-Control-Allow-Origin: http://localhost:5173` (ou `*` em dev, com cuidado)
-- `Access-Control-Allow-Methods: GET, PUT, OPTIONS`
-- `Access-Control-Allow-Headers: Content-Type, Authorization`
+O backend permite `localhost:5173`, `127.0.0.1:5173`, `projeto-arquice.vercel.app` e `*.vercel.app`.
 
-## Implementação no front
+## Ficheiros relacionados
 
-- Pedidos: [`siteConfigAdminApi.ts`](./siteConfigAdminApi.ts)
-- Tipos e defaults a partir do código: [`siteConfigPayload.ts`](./siteConfigPayload.ts)
-- Rota da UI: constante `ADMIN_SITE_CONFIG_PATH` (por defeito `/adm`) em [`constants.ts`](./constants.ts)
+| Ficheiro | Função |
+|----------|--------|
+| `siteConfigAdminApi.ts` | Pedidos GET/PUT |
+| `siteConfigPayload.ts` | Tipos e defaults |
+| `constants.ts` | `/adm` e `/api/site-config` |
+| `../lib/api.ts` | `getApiBaseUrl()`, `apiUrl()` |
+| `../pages/AdminSiteConfigPage.tsx` | UI do painel |
 
-## Equivalência snake_case (opcional)
+## Documentação geral
 
-Se o backend usar `snake_case`, pode fazer a conversão no servidor **ou** estender `siteConfigAdminApi.ts` para mapear antes do `fetch`. Tabela rápida:
-
-| camelCase (front) | snake_case |
-|-------------------|------------|
-| `orgEmail` | `org_email` |
-| `contactEmail` | `contact_email` |
-| `pixKey` | `pix_key` |
-| `orgName` | `org_name` |
-| `orgFullName` | `org_full_name` |
-| `orgDescription` | `org_description` |
-| `orgCnpj` | `org_cnpj` |
-| `contactPhone` | `contact_phone` |
-| `contactAddress` | `contact_address` |
-| `socialMedia` | `social_media` |
-| `faviconPath` | `favicon_path` |
-
-(Objetos aninhados: `contact_address.street`, etc.)
+- [README do projeto](../../README.md)
+- [API backend](../../backend/README.md)
+- [Guia do painel](../../docs/ADMIN.md)
+- [Deploy](../../docs/DEPLOYMENT.md)
