@@ -32,26 +32,34 @@ export function AboutSection() {
   return (
     <section
       id="sobre"
-      className="py-20 bg-background"
+      className="py-20 md:py-28 bg-background"
       aria-labelledby="about-heading"
     >
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-          <div>
+          <div data-reveal>
             <img
               src={AboutPicture}
               alt="Voluntários cuidando de idosos na comunidade"
               className="rounded-lg shadow-xl w-full"
+              width={1600}
+              height={858}
+              loading="lazy"
+              decoding="async"
             />
           </div>
 
-          <div className="space-y-6">
+          <div
+            className="space-y-6"
+            data-reveal
+            style={{ "--reveal-delay": "120ms" } as React.CSSProperties}
+          >
             <h2 id="about-heading">Quem Somos</h2>
 
             <div className="space-y-4">
               <div>
                 <h3 className="mb-2 flex items-center gap-2">
-                  <Target className="h-5 w-5 text-primary" aria-hidden="true" />
+                  <Target className="h-5 w-5 text-brand" aria-hidden="true" />
                   Missão
                 </h3>
                 <p className="text-muted-foreground">
@@ -61,7 +69,7 @@ export function AboutSection() {
 
               <div>
                 <h3 className="mb-2 flex items-center gap-2">
-                  <Eye className="h-5 w-5 text-primary" aria-hidden="true" />
+                  <Eye className="h-5 w-5 text-brand" aria-hidden="true" />
                   Visão
                 </h3>
                 <p className="text-muted-foreground">
@@ -69,7 +77,7 @@ export function AboutSection() {
                 </p>
               </div>
 
-              <div className="bg-primary/5 p-6 rounded-lg border-l-4 border-primary">
+              <div className="bg-brand/5 p-6 rounded-lg border-l-4 border-brand">
                 <h3 className="mb-3">Nossa História</h3>
                 <p className="text-muted-foreground">
                 Fundada em 6 de maio de 2017, a Associação nasceu com o objetivo de incentivar as famílias em seus projetos de empreendimento, esporte e cultura. Consolidamos projetos como a oficina de costura, que gera nova profissão e renda. Nosso trabalho é focado no compromisso com o futuro de nossa comunidade.
@@ -81,15 +89,15 @@ export function AboutSection() {
 
         <div>
           <h3 className="text-center mb-8">Nossos Valores</h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal>
             {values.map((value, index) => {
               const Icon = value.icon;
               return (
-                <Card key={index}>
+                <Card key={index} className="card-interactive">
                   <CardContent className="pt-6 text-center">
-                    <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-14 w-14 rounded-full bg-brand/10 flex items-center justify-center mx-auto mb-4">
                       <Icon
-                        className="h-7 w-7 text-primary"
+                        className="h-7 w-7 text-brand"
                         aria-hidden="true"
                       />
                     </div>

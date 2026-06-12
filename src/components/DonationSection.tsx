@@ -183,12 +183,17 @@ Este é um email automático, por favor não responda.
   return (
     <section 
       id="doacoes" 
-      className="py-20 bg-gradient-to-br from-primary/5 to-secondary/10"
+      className="relative isolate overflow-hidden py-20 md:py-28 bg-gradient-to-br from-brand/5 to-secondary/10"
       aria-labelledby="donation-heading"
     >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-28 -left-20 h-[30rem] w-[30rem] rounded-full bg-brand/[0.07] blur-3xl" />
+        <div className="absolute -bottom-32 -right-20 h-[28rem] w-[28rem] rounded-full bg-brand-blue/[0.05] blur-3xl" />
+      </div>
+
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12" data-reveal>
             <h2 id="donation-heading" className="mb-6">
               Faça Parte Desta Transformação
             </h2>
@@ -199,7 +204,12 @@ Este é um email automático, por favor não responda.
           </div>
 
 
-          <Tabs defaultValue="monetary" className="w-full">
+          <Tabs
+            defaultValue="monetary"
+            className="w-full"
+            data-reveal
+            style={{ "--reveal-delay": "100ms" } as React.CSSProperties}
+          >
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="monetary" className="text-base">
                 <QrCode className="h-4 w-4 mr-2" aria-hidden="true" />
@@ -264,20 +274,20 @@ Este é um email automático, por favor não responda.
 
                       <div className="bg-muted/50 p-4 rounded-lg">
                         <h4 className="mb-3 flex items-center gap-2">
-                          <Heart className="h-5 w-5 text-primary" aria-hidden="true" />
+                          <Heart className="h-5 w-5 text-brand" aria-hidden="true" />
                           Como sua doação é utilizada
                         </h4>
                         <ul className="space-y-2 text-sm text-muted-foreground">
                           <li className="flex items-start gap-2">
-                            <Heart className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" aria-hidden="true" />
+                            <Heart className="h-4 w-4 text-brand mt-0.5 flex-shrink-0" aria-hidden="true" />
                             <span>85% destinados diretamente aos projetos e beneficiários</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <Heart className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" aria-hidden="true" />
+                            <Heart className="h-4 w-4 text-brand mt-0.5 flex-shrink-0" aria-hidden="true" />
                             <span>10% em capacitação de equipe e voluntários</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <Heart className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" aria-hidden="true" />
+                            <Heart className="h-4 w-4 text-brand mt-0.5 flex-shrink-0" aria-hidden="true" />
                             <span>5% em custos administrativos essenciais</span>
                           </li>
                         </ul>
@@ -301,7 +311,7 @@ Este é um email automático, por favor não responda.
                               Aceito os{" "}
                               <Link 
                                 to="/privacidade" 
-                                className="text-primary underline hover:text-primary/80 inline"
+                                className="text-brand underline hover:text-brand/80 inline"
                               >
                                 termos de privacidade
                               </Link>
@@ -322,9 +332,9 @@ Este é um email automático, por favor não responda.
                     </form>
                   ) : (
                     <div className="space-y-6">
-                      <Alert className="bg-green-50 border-green-200">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <AlertDescription className="text-green-800">
+                      <Alert className="bg-success-muted border-success-border">
+                        <CheckCircle2 className="h-4 w-4 text-success" />
+                        <AlertDescription className="text-success">
                           <strong>Obrigado pela sua doação!</strong> Em breve você receberá um e-mail de agradecimento.
                         </AlertDescription>
                       </Alert>
@@ -332,12 +342,12 @@ Este é um email automático, por favor não responda.
                       <div className="bg-muted/50 p-6 rounded-lg">
                         <div className="text-center space-y-4">
                           <div className="flex items-center justify-center gap-2 mb-4">
-                            <QrCode className="h-6 w-6 text-primary" aria-hidden="true" />
+                            <QrCode className="h-6 w-6 text-brand" aria-hidden="true" />
                             <h3 className="text-lg font-semibold">Escaneie o QR Code para doar</h3>
                           </div>
                           
                           <div className="flex justify-center">
-                            <div className="bg-white p-4 rounded-lg border-2 border-primary/20">
+                            <div className="bg-white p-4 rounded-lg border-2 border-brand/20">
                               <QRCodeSVG 
                                 value={PIX_KEY}
                                 size={256}
@@ -485,7 +495,7 @@ Este é um email automático, por favor não responda.
                             Aceito os{" "}
                             <Link 
                               to="/privacidade" 
-                              className="text-primary underline hover:text-primary/80 inline"
+                              className="text-brand underline hover:text-brand/80 inline"
                             >
                               termos de privacidade
                             </Link>
@@ -495,9 +505,9 @@ Este é um email automático, por favor não responda.
                       </div>
 
                       {submitError && (
-                        <Alert className="bg-red-50 border-red-200">
-                          <AlertCircle className="h-4 w-4 text-red-600" />
-                          <AlertDescription className="text-red-800">
+                        <Alert className="bg-destructive/10 border-destructive/30">
+                          <AlertCircle className="h-4 w-4 text-destructive" />
+                          <AlertDescription className="text-destructive">
                             {submitError}
                           </AlertDescription>
                         </Alert>
@@ -524,15 +534,15 @@ Este é um email automático, por favor não responda.
                     </form>
                   ) : (
                     <div className="space-y-4">
-                      <Alert className="bg-green-50 border-green-200">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <AlertDescription className="text-green-800">
+                      <Alert className="bg-success-muted border-success-border">
+                        <CheckCircle2 className="h-4 w-4 text-success" />
+                        <AlertDescription className="text-success">
                           <strong>Obrigado pelo seu interesse em ser voluntário!</strong> Em breve entraremos em contato através do e-mail informado.
                         </AlertDescription>
                       </Alert>
-                      <Alert className="bg-blue-50 border-blue-200">
-                        <AlertCircle className="h-4 w-4 text-blue-600" />
-                        <AlertDescription className="text-blue-800 text-sm">
+                      <Alert className="bg-info-muted border-info-border">
+                        <AlertCircle className="h-4 w-4 text-info" />
+                        <AlertDescription className="text-info text-sm">
                           <strong>📧 Importante:</strong> Você receberá um email do FormSubmit pedindo para ativar o recebimento de emails. É necessário clicar no botão "ACTIVATE FORM" para receber nosso email de agradecimento e futuras comunicações. Este processo acontece apenas uma vez.
                         </AlertDescription>
                       </Alert>

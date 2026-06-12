@@ -35,7 +35,7 @@ export function Footer() {
             <div className="flex gap-3">
               <a
                 href={SOCIAL_MEDIA.instagram}
-                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                className="h-10 w-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="Instagram"
                 target={
                   SOCIAL_MEDIA.instagram.startsWith("http")
@@ -61,7 +61,7 @@ export function Footer() {
                 <a
                   href="#sobre"
                   onClick={(e) => handleHashClick(e, "#sobre")}
-                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  className="opacity-90 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                 >
                   Quem Somos
                 </a>
@@ -70,7 +70,7 @@ export function Footer() {
                 <a
                   href="#projetos"
                   onClick={(e) => handleHashClick(e, "#projetos")}
-                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  className="opacity-90 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                 >
                   Projetos
                 </a>
@@ -79,7 +79,7 @@ export function Footer() {
                 <a
                   href="#doacoes"
                   onClick={(e) => handleHashClick(e, "#doacoes")}
-                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  className="opacity-90 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                 >
                   Como Doar
                 </a>
@@ -87,7 +87,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/privacidade"
-                  className="opacity-90 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  className="opacity-90 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                 >
                   Política de Privacidade
                 </Link>
@@ -114,7 +114,7 @@ export function Footer() {
               <li>
                 <a
                   href={`tel:${CONTACT_PHONE.replace(/\D/g, "")}`}
-                  className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  className="flex items-center gap-2 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                 >
                   <Phone className="h-5 w-5" aria-hidden="true" />
                   <span className="text-sm">{CONTACT_PHONE}</span>
@@ -123,7 +123,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="flex items-center gap-2 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring rounded"
+                  className="flex items-center gap-2 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                 >
                   <Mail className="h-5 w-5" aria-hidden="true" />
                   <span className="text-sm">{CONTACT_EMAIL}</span>

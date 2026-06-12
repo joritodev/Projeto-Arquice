@@ -4,48 +4,88 @@
 
 :root {
   --font-size: 16px;
-  --background: 0 0% 100%;
-  --foreground: 0 0% 9%;
+  /* Tipografia: corpo/UI em DM Sans, títulos em Fraunces (Google Fonts, display=swap) */
+  --font-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Fraunces", Georgia, Cambria, "Times New Roman", serif;
+  /* Off-white suave em vez de branco puro (#F8F9FA) */
+  --background: 210 20% 98%;
+  /* Grafite profundo em vez de preto puro (#111827) */
+  --foreground: 222 24% 13%;
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 9%;
+  --card-foreground: 222 24% 13%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 9%;
+  --popover-foreground: 222 24% 13%;
+  --primary: 222 24% 13%;
+  --primary-foreground: 210 20% 98%;
+  --secondary: 210 16% 95%;
+  --secondary-foreground: 222 24% 13%;
+  --muted: 210 16% 95%;
+  --muted-foreground: 215 14% 40%;
+  --accent: 210 16% 95%;
+  --accent-foreground: 222 24% 13%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --ring: 0 0% 9%;
+  /* Cores do logo (energia/vitalidade) — usadas em CTAs, hover e ícones de destaque */
+  --brand: 28 82% 45%;
+  --brand-foreground: 0 0% 100%;
+  --brand-green: 122 40% 34%;
+  --brand-blue: 205 70% 45%;
+  --success: 142 72% 29%;
+  --success-foreground: 0 0% 98%;
+  --success-muted: 142 60% 95%;
+  --success-border: 142 45% 80%;
+  --info: 217 80% 40%;
+  --info-foreground: 0 0% 98%;
+  --info-muted: 214 90% 95%;
+  --info-border: 213 70% 82%;
+  --warning: 32 80% 34%;
+  --warning-foreground: 0 0% 98%;
+  --warning-muted: 48 95% 94%;
+  --warning-border: 45 85% 78%;
+  --border: 214 16% 88%;
+  --input: 214 16% 88%;
+  /* Foco usa a cor de marca para reforçar a identidade */
+  --ring: 28 82% 45%;
   --radius: 0.5rem;
 }
 
 .dark {
-  --background: 0 0% 9%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 65%;
-  --accent: 0 0% 15%;
-  --accent-foreground: 0 0% 98%;
+  --background: 222 28% 8%;
+  --foreground: 210 20% 96%;
+  --card: 222 24% 12%;
+  --card-foreground: 210 20% 96%;
+  --popover: 222 24% 12%;
+  --popover-foreground: 210 20% 96%;
+  --primary: 210 20% 96%;
+  --primary-foreground: 222 24% 13%;
+  --secondary: 217 19% 18%;
+  --secondary-foreground: 210 20% 96%;
+  --muted: 217 19% 18%;
+  --muted-foreground: 215 16% 65%;
+  --accent: 217 19% 18%;
+  --accent-foreground: 210 20% 96%;
   --destructive: 0 62% 30%;
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 0 0% 83%;
+  --brand: 30 88% 56%;
+  --brand-foreground: 222 24% 10%;
+  --brand-green: 122 38% 50%;
+  --brand-blue: 205 75% 62%;
+  --success: 142 65% 60%;
+  --success-foreground: 0 0% 9%;
+  --success-muted: 142 35% 14%;
+  --success-border: 142 35% 26%;
+  --info: 217 90% 70%;
+  --info-foreground: 0 0% 9%;
+  --info-muted: 214 45% 15%;
+  --info-border: 213 45% 27%;
+  --warning: 38 90% 62%;
+  --warning-foreground: 0 0% 9%;
+  --warning-muted: 38 45% 15%;
+  --warning-border: 40 45% 27%;
+  --border: 217 19% 22%;
+  --input: 217 19% 22%;
+  --ring: 30 88% 56%;
 }
 
 @layer base {
@@ -55,11 +95,13 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--font-sans);
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     @apply font-semibold;
+    letter-spacing: -0.015em;
   }
   
   h1 {
@@ -81,11 +123,59 @@
   p {
     @apply text-base leading-relaxed;
   }
+
+  /* Acessibilidade (WCAG): foco visível e consistente para navegação por teclado.
+     Usa o token --ring do design system. Componentes que gerenciam o próprio
+     anel (Button, Input) sobrescrevem com utilitários focus-visible:outline-none. */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Remove o outline ao interagir com o mouse, mantendo-o só no teclado. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@layer components {
+  /* Feedback visual fluido para cards interativos/clicáveis */
+  .card-interactive {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
+  }
+}
+
+/* Reveal on scroll: fade-in-up sutil, acionado uma única vez via IntersectionObserver.
+   Desativado para quem prefere movimento reduzido (conteúdo sempre visível). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  [data-reveal][data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 html {
   font-size: var(--font-size);
   height: 100%;
+  scroll-behavior: smooth;
+  /* Compensa o header sticky ao navegar por âncoras */
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {

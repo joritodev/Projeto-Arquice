@@ -1,6 +1,7 @@
 import { SITE_CONFIG_API_PATH } from "./constants";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "./siteConfigPayload";
 import { getApiBaseUrl } from "../lib/api";
+import { parseProjects } from "../config/projects";
 
 /** @deprecated Use getApiBaseUrl from ../lib/api */
 export function getAdminApiBaseUrl(): string {
@@ -95,6 +96,7 @@ export function parseSiteConfigResponse(data: unknown): SiteConfigPayload {
       cause: String(im.cause ?? ""),
     },
     faviconPath: String(o.faviconPath ?? ""),
+    projects: parseProjects(o.projects),
   };
 }
 

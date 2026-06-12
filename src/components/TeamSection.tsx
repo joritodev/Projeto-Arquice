@@ -30,11 +30,11 @@ export function TeamSection() {
   return (
     <section
       id="equipe"
-      className="py-20 bg-secondary/5"
+      className="py-20 md:py-28 bg-secondary/5"
       aria-labelledby="team-heading"
     >
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div className="max-w-3xl mx-auto text-center mb-16" data-reveal>
           <h2 id="team-heading" className="mb-6">
             Principais Representantes
           </h2>
@@ -44,19 +44,23 @@ export function TeamSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-reveal>
           {team.map((member, index) => (
-            <Card key={index} className="text-center">
+            <Card key={index} className="card-interactive text-center">
               <CardContent className="pt-6">
                 <div className="mb-4">
                   <img
                     src={member.image}
                     alt={`Foto de ${member.name}`}
-                    className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/10"
+                    className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-brand/20"
+                    width={128}
+                    height={128}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <h3 className="mb-1">{member.name}</h3>
-                <p className="text-sm text-primary mb-3">{member.role}</p>
+                <p className="text-sm text-brand mb-3">{member.role}</p>
                 <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
                 <div className="bg-secondary/20 p-3 rounded mb-4">
                   <p className="text-xs">{member.importance}</p>

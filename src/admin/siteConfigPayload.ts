@@ -12,6 +12,7 @@ import {
   IMAGES,
   FAVICON_PATH,
 } from "../config/siteConfig";
+import { DEFAULT_PROJECTS, type Project } from "../config/projects";
 
 /**
  * Payload JSON (camelCase) alinhado ao que o backend deve aceitar/devolver.
@@ -45,6 +46,8 @@ export type SiteConfigPayload = {
   };
   /** Caminho público do favicon (ex.: `/Logo.ico`). */
   faviconPath: string;
+  /** Projetos exibidos na seção "Projetos Futuros". */
+  projects: Project[];
 };
 
 /**
@@ -77,5 +80,6 @@ export function defaultsFromSiteConfig(): SiteConfigPayload {
       cause: IMAGES.cause,
     },
     faviconPath: FAVICON_PATH,
+    projects: DEFAULT_PROJECTS.map((p) => ({ ...p })),
   };
 }

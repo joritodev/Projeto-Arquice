@@ -1,15 +1,19 @@
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { toast, Toaster } from "sonner";
+import { Pencil, Trash2, Plus, CheckCircle2, RotateCcw } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Badge } from "../components/ui/badge";
 import { getAdminApiBaseUrl, getSiteConfig, saveSiteConfig } from "../admin/siteConfigAdminApi";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "../admin/siteConfigPayload";
+import { ProjectFormDialog } from "../components/admin/ProjectFormDialog";
+import { createEmptyProject, getProjectIcon, type Project } from "../config/projects";
 import { useAuth } from "../contexts/AuthContext";
 import { apiUrl } from "../lib/api";
 
@@ -39,8 +43,54 @@ export function AdminSiteConfigPage() {
     handleSubmit,
     reset,
     setValue,
+    control,
+    getValues,
     formState: { errors, isSubmitting },
   } = form;
+
+  const { fields: projectFields, append, update, remove } = useFieldArray({
+    control,
+    name: "projects",
+    keyName: "_rhfId",
+  });
+
+  const [projectDialogOpen, setProjectDialogOpen] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [projectDraft, setProjectDraft] = useState<Project>(() => createEmptyProject());
+
+  const openCreateProject = () => {
+    setEditingIndex(null);
+    setProjectDraft(createEmptyProject());
+    setProjectDialogOpen(true);
+  };
+
+  const openEditProject = (index: number) => {
+    const current = getValues(`projects.${index}`) as Project;
+    setEditingIndex(index);
+    setProjectDraft({ ...current });
+    setProjectDialogOpen(true);
+  };
+
+  const handleProjectSubmit = (project: Project) => {
+    if (editingIndex === null) {
+      append(project);
+      toast.success("Projeto adicionado. Lembre-se de Guardar para publicar.");
+    } else {
+      update(editingIndex, project);
+      toast.success("Projeto atualizado. Lembre-se de Guardar para publicar.");
+    }
+    setProjectDialogOpen(false);
+  };
+
+  const handleProjectDelete = (index: number) => {
+    remove(index);
+    toast.success("Projeto removido. Lembre-se de Guardar para publicar.");
+  };
+
+  const toggleProjectGoalReached = (index: number) => {
+    const current = getValues(`projects.${index}`) as Project;
+    update(index, { ...current, goalReached: !current.goalReached });
+  };
 
   const loadFromServer = useCallback(async () => {
     try {
@@ -245,6 +295,7 @@ export function AdminSiteConfigPage() {
               <TabsTrigger value="contacto">Contato</TabsTrigger>
               <TabsTrigger value="redes">Redes</TabsTrigger>
               <TabsTrigger value="imagens">Imagens</TabsTrigger>
+              <TabsTrigger value="projetos">Projetos</TabsTrigger>
               <TabsTrigger value="favicon">Favicon</TabsTrigger>
               <TabsTrigger value="conta">Conta</TabsTrigger>
             </TabsList>
@@ -438,6 +489,111 @@ export function AdminSiteConfigPage() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="projetos">
+              <Card>
+                <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <CardTitle>Projetos Futuros</CardTitle>
+                    <CardDescription>
+                      Crie, edite, marque como "Meta alcançada" ou remova os projetos
+                      exibidos na home. As alterações são publicadas ao clicar em{" "}
+                      <strong>Guardar</strong>.
+                    </CardDescription>
+                  </div>
+                  <Button type="button" onClick={openCreateProject} className="shrink-0">
+                    <Plus className="h-4 w-4" aria-hidden="true" />
+                    Novo projeto
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {projectFields.length === 0 ? (
+                    <p className="text-sm text-muted-foreground py-8 text-center">
+                      Nenhum projeto cadastrado. Clique em <strong>Novo projeto</strong> para adicionar.
+                    </p>
+                  ) : (
+                    projectFields.map((field, index) => {
+                      const Icon = getProjectIcon(field.icon);
+                      return (
+                        <div
+                          key={field._rhfId}
+                          className="flex items-center gap-3 rounded-lg border p-3"
+                        >
+                          <div
+                            className={`h-10 w-10 rounded-full flex items-center justify-center shrink-0 ${
+                              field.goalReached
+                                ? "bg-success/10 text-success"
+                                : "bg-brand/10 text-brand"
+                            }`}
+                          >
+                            <Icon className="h-5 w-5" aria-hidden="true" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <p className="font-medium truncate">
+                                {field.title || "Sem título"}
+                              </p>
+                              {field.goalReached && (
+                                <Badge className="bg-success text-success-foreground">
+                                  <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
+                                  Meta Alcançada
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground truncate">
+                              Meta: R$ {(field.goal || 0).toLocaleString("pt-BR")}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1 shrink-0">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggleProjectGoalReached(index)}
+                              aria-label={
+                                field.goalReached
+                                  ? "Reabrir projeto (desmarcar meta)"
+                                  : "Marcar meta como alcançada"
+                              }
+                              title={
+                                field.goalReached
+                                  ? "Reabrir (desmarcar meta)"
+                                  : "Marcar meta alcançada"
+                              }
+                            >
+                              {field.goalReached ? (
+                                <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                              ) : (
+                                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                              )}
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => openEditProject(index)}
+                              aria-label="Editar projeto"
+                            >
+                              <Pencil className="h-4 w-4" aria-hidden="true" />
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleProjectDelete(index)}
+                              aria-label="Remover projeto"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" aria-hidden="true" />
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="favicon">
               <Card>
                 <CardHeader>
@@ -496,6 +652,14 @@ export function AdminSiteConfigPage() {
             </TabsContent>
           </Tabs>
         </form>
+
+        <ProjectFormDialog
+          open={projectDialogOpen}
+          onOpenChange={setProjectDialogOpen}
+          initial={projectDraft}
+          isEditing={editingIndex !== null}
+          onSubmit={handleProjectSubmit}
+        />
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
           <Link to="/" className="underline underline-offset-4 hover:text-foreground">

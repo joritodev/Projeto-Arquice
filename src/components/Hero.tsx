@@ -22,12 +22,17 @@ export function Hero() {
   return (
     <section 
       id="home" 
-      className="relative bg-gradient-to-br from-primary/5 to-secondary/10 py-20 md:py-32"
+      className="relative isolate overflow-hidden bg-gradient-to-br from-brand/5 to-secondary/10 py-24 md:py-32"
       aria-labelledby="hero-heading"
     >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-32 -left-24 h-[32rem] w-[32rem] rounded-full bg-brand/[0.06] blur-3xl" />
+        <div className="absolute -bottom-40 right-0 h-[28rem] w-[28rem] rounded-full bg-brand-green/[0.05] blur-3xl" />
+      </div>
+
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+          <div className="space-y-6" data-reveal>
             <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-6xl">
               Transformando Vidas Através da Solidariedade
             </h1>
@@ -58,11 +63,20 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="relative">
+          <div
+            className="relative"
+            data-reveal
+            style={{ "--reveal-delay": "120ms" } as React.CSSProperties}
+          >
             <img
               src={Banner}
               alt="Voluntários da OSC ajudando a comunidade"
               className="rounded-lg shadow-2xl w-full h-auto object-cover"
+              width={963}
+              height={560}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </div>
         </div>

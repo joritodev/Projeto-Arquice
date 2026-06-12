@@ -32,6 +32,22 @@ const siteConfigSchema = new mongoose.Schema({
 
   faviconPath: { type: String, default: "" },
 
+  projects: {
+    type: [
+      {
+        id: { type: String, required: true },
+        title: { type: String, default: "" },
+        description: { type: String, default: "" },
+        icon: { type: String, default: "Spool" },
+        goal: { type: Number, default: 0 },
+        impact: { type: String, default: "" },
+        goalReached: { type: Boolean, default: false },
+      },
+    ],
+    default: [],
+    _id: false,
+  },
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('SiteConfig', siteConfigSchema);

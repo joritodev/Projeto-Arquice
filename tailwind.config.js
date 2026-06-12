@@ -24,6 +24,30 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        brand: {
+          DEFAULT: "hsl(var(--brand))",
+          foreground: "hsl(var(--brand-foreground))",
+          green: "hsl(var(--brand-green))",
+          blue: "hsl(var(--brand-blue))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+          muted: "hsl(var(--success-muted))",
+          border: "hsl(var(--success-border))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+          muted: "hsl(var(--info-muted))",
+          border: "hsl(var(--info-border))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+          muted: "hsl(var(--warning-muted))",
+          border: "hsl(var(--warning-border))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -48,6 +72,7 @@ export default {
       },
       fontFamily: {
         sans: [
+          '"DM Sans"',
           'system-ui',
           '-apple-system',
           'BlinkMacSystemFont',
@@ -56,6 +81,13 @@ export default {
           '"Helvetica Neue"',
           'Arial',
           'sans-serif',
+        ],
+        heading: [
+          '"Fraunces"',
+          'Georgia',
+          'Cambria',
+          '"Times New Roman"',
+          'serif',
         ],
       },
     },

@@ -44,10 +44,18 @@ export function Header() {
           <a 
             href="#home" 
             onClick={handleLogoClick}
-            className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-ring rounded"
+            className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
             aria-label="Página inicial da OSC"
           >
-            <img src={Logo} alt="Logo da OSC" className="h-12 w-16"	/>
+            <img
+              src={Logo}
+              alt="Logo da OSC"
+              className="h-12 w-16"
+              width={64}
+              height={48}
+              loading="eager"
+              decoding="async"
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -57,7 +65,7 @@ export function Header() {
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="text-foreground hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-ring rounded px-2 py-1"
+                className="text-foreground hover:text-brand transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-2 py-1"
               >
                 {item.name}
               </a>
@@ -81,6 +89,7 @@ export function Header() {
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
             aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
           >
             {mobileMenuOpen ? (
@@ -93,14 +102,14 @@ export function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t pt-4">
+          <div id="mobile-menu" className="md:hidden mt-4 pb-4 border-t pt-4">
             <div className="flex flex-col gap-3">
               {navigation.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-foreground hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-ring rounded px-2 py-2"
+                  className="text-foreground hover:text-brand transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-2 py-2"
                 >
                   {item.name}
                 </a>
