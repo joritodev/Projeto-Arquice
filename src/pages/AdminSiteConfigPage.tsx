@@ -13,6 +13,7 @@ import { Badge } from "../components/ui/badge";
 import { getAdminApiBaseUrl, getSiteConfig, saveSiteConfig } from "../admin/siteConfigAdminApi";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "../admin/siteConfigPayload";
 import { ProjectFormDialog } from "../components/admin/ProjectFormDialog";
+import { TabHelpDialog } from "../components/admin/TabHelpDialog";
 import { createEmptyProject, getProjectIcon, type Project } from "../config/projects";
 import { useAuth } from "../contexts/AuthContext";
 import { apiUrl } from "../lib/api";
@@ -303,8 +304,28 @@ export function AdminSiteConfigPage() {
             <TabsContent value="emails">
               <Card>
                 <CardHeader>
-                  <CardTitle>Emails</CardTitle>
-                  <CardDescription>Formulários de voluntários e email público no rodapé.</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Emails</CardTitle>
+                      <CardDescription>Formulários de voluntários e email público no rodapé.</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Emails"
+                      intro="Aqui você define para onde vão as mensagens do site e qual email o público vê."
+                      items={[
+                        {
+                          label: "Email da organização (formulários)",
+                          description:
+                            "É a caixa de email que vai RECEBER as mensagens de quem preenche os formulários do site (por exemplo, pessoas que querem ser voluntárias). Use um email que vocês acessam com frequência.",
+                        },
+                        {
+                          label: "Email de contato público",
+                          description:
+                            "É o email que APARECE para qualquer visitante do site (no rodapé), para que possam entrar em contato com vocês. Pode ser o mesmo do campo acima.",
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -334,8 +355,23 @@ export function AdminSiteConfigPage() {
             <TabsContent value="pix">
               <Card>
                 <CardHeader>
-                  <CardTitle>Chave PIX</CardTitle>
-                  <CardDescription>Código PIX (EMV) para doações.</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Chave PIX</CardTitle>
+                      <CardDescription>Código PIX (EMV) para doações.</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Chave PIX"
+                      intro="Este é o código que permite ao site receber doações por PIX."
+                      items={[
+                        {
+                          label: "PIX (código)",
+                          description:
+                            'É o código do PIX que aparece na seção de doações do site (no formato \"copia e cola\" e em QR Code). As pessoas usam ele para doar. Para obtê-lo, gere um \"PIX copia e cola\" no aplicativo do seu banco e cole aqui exatamente como veio.',
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <Label htmlFor="pixKey">PIX</Label>
@@ -353,8 +389,38 @@ export function AdminSiteConfigPage() {
             <TabsContent value="org">
               <Card>
                 <CardHeader>
-                  <CardTitle>Organização</CardTitle>
-                  <CardDescription>Nome, descrição e CNPJ exibidos no site.</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Organização</CardTitle>
+                      <CardDescription>Nome, descrição e CNPJ exibidos no site.</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Organização"
+                      intro="São os dados de identificação da organização que aparecem em vários lugares do site."
+                      items={[
+                        {
+                          label: "Nome curto",
+                          description:
+                            "O nome abreviado da organização. Aparece no topo do site e em títulos. Ex.: \"Arquice\".",
+                        },
+                        {
+                          label: "Nome completo",
+                          description:
+                            "O nome oficial e completo da organização. Aparece em lugares mais formais, como textos de apresentação.",
+                        },
+                        {
+                          label: "Descrição curta",
+                          description:
+                            "Uma frase curta que resume o que a organização faz. Aparece em destaque para apresentar a causa logo de cara.",
+                        },
+                        {
+                          label: "CNPJ",
+                          description:
+                            "O número de CNPJ da organização. É mostrado no site para passar transparência e confiança a quem quer doar.",
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -384,8 +450,41 @@ export function AdminSiteConfigPage() {
             <TabsContent value="contacto">
               <Card>
                 <CardHeader>
-                  <CardTitle>Contato</CardTitle>
-                  <CardDescription>Telefone e endereço.</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Contato</CardTitle>
+                      <CardDescription>Telefone e endereço.</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Contato"
+                      intro="São as informações de telefone e localização que o site mostra ao público."
+                      items={[
+                        {
+                          label: "Telefone",
+                          description:
+                            "O número de telefone de contato que aparece no site para o público ligar ou chamar.",
+                        },
+                        {
+                          label: "Morada / comunidade",
+                          description:
+                            "A rua e número (ou o nome da comunidade) onde a organização fica ou atua. Aparece na área de contato/endereço.",
+                        },
+                        {
+                          label: "Bairro / zona",
+                          description: "O bairro ou zona do endereço. Complementa a localização exibida no site.",
+                        },
+                        {
+                          label: "Cidade",
+                          description: "A cidade onde a organização está localizada.",
+                        },
+                        {
+                          label: "Estado (UF)",
+                          description:
+                            "A sigla do estado, com 2 letras. Ex.: SP (São Paulo), RJ (Rio de Janeiro), MG (Minas Gerais).",
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -422,8 +521,23 @@ export function AdminSiteConfigPage() {
             <TabsContent value="redes">
               <Card>
                 <CardHeader>
-                  <CardTitle>Redes sociais</CardTitle>
-                  <CardDescription>URL completa do Instagram (ou &quot;#&quot; se não existir).</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Redes sociais</CardTitle>
+                      <CardDescription>URL completa do Instagram (ou &quot;#&quot; se não existir).</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Redes sociais"
+                      intro="Define para onde os ícones de redes sociais do site levam quando alguém clica."
+                      items={[
+                        {
+                          label: "Instagram",
+                          description:
+                            "Cole aqui o endereço (link) completo do Instagram da organização, começando com https:// (ex.: https://instagram.com/suaong). Quando alguém clicar no ícone do Instagram no site, será levado para essa página. Se a organização ainda não tem Instagram, deixe apenas o símbolo #.",
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <Label htmlFor="instagram">Instagram</Label>
@@ -441,8 +555,38 @@ export function AdminSiteConfigPage() {
             <TabsContent value="imagens">
               <Card>
                 <CardHeader>
-                  <CardTitle>Ficheiros de imagem</CardTitle>
-                  <CardDescription>Nomes dos ficheiros em src/assets/ (ex.: Logo.png).</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Ficheiros de imagem</CardTitle>
+                      <CardDescription>Nomes dos ficheiros em src/assets/ (ex.: Logo.png).</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Imagens"
+                      intro="Aqui você troca as fotos do site. Em cada campo, clique para escolher uma imagem do seu computador — ela é enviada automaticamente."
+                      items={[
+                        {
+                          label: "Logo",
+                          description:
+                            "O logotipo da organização. Aparece no topo do site (no menu) e identifica a marca em toda a página.",
+                        },
+                        {
+                          label: "Banner",
+                          description:
+                            "A imagem grande de destaque no início da página — geralmente a primeira coisa que a pessoa vê ao abrir o site.",
+                        },
+                        {
+                          label: "Sobre",
+                          description:
+                            "A foto que acompanha a seção \"Sobre\" (quem somos), onde a organização se apresenta.",
+                        },
+                        {
+                          label: "Causa",
+                          description:
+                            "A foto da seção que fala sobre a causa da organização, ajudando a contar a história e emocionar o visitante.",
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent className="grid gap-4 sm:grid-cols-2">
                   <div>
@@ -500,10 +644,38 @@ export function AdminSiteConfigPage() {
                       <strong>Guardar</strong>.
                     </CardDescription>
                   </div>
-                  <Button type="button" onClick={openCreateProject} className="shrink-0">
-                    <Plus className="h-4 w-4" aria-hidden="true" />
-                    Novo projeto
-                  </Button>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <TabHelpDialog
+                      title="Sobre a aba Projetos Futuros"
+                      intro="Esta aba controla os cards de projetos que aparecem na seção 'Projetos Futuros' da página inicial."
+                      items={[
+                        {
+                          label: "Botão \"Novo projeto\"",
+                          description:
+                            "Abre uma janela para criar um novo projeto. Enquanto você preenche, vê do lado uma prévia de como o card vai ficar no site.",
+                        },
+                        {
+                          label: "Título, Descrição, Ícone, Meta e Impacto",
+                          description:
+                            "São as informações de cada card: o nome do projeto, o que ele é, um desenho (ícone), o valor que se pretende arrecadar e a frase que mostra a quem o projeto vai ajudar.",
+                        },
+                        {
+                          label: "Botão de marcar/desmarcar meta (✓)",
+                          description:
+                            "Marca o projeto como \"Meta Alcançada\" quando ele for concluído (o card mostra um selo no site). É possível desmarcar para voltar ao estado anterior.",
+                        },
+                        {
+                          label: "Botão de editar (lápis) e remover (lixeira)",
+                          description:
+                            "O lápis abre o projeto para mudar os dados. A lixeira apaga o projeto. Se não houver nenhum projeto, o site mostra uma mensagem de \"em breve\".",
+                        },
+                      ]}
+                    />
+                    <Button type="button" onClick={openCreateProject} className="shrink-0">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                      Novo projeto
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {projectFields.length === 0 ? (
@@ -597,8 +769,23 @@ export function AdminSiteConfigPage() {
             <TabsContent value="favicon">
               <Card>
                 <CardHeader>
-                  <CardTitle>Favicon</CardTitle>
-                  <CardDescription>Caminho público (ficheiro em public/), ex.: /Logo.ico</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Favicon</CardTitle>
+                      <CardDescription>Caminho público (ficheiro em public/), ex.: /Logo.ico</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Favicon"
+                      intro="O favicon é aquele iconezinho que aparece na aba do navegador, ao lado do nome do site."
+                      items={[
+                        {
+                          label: "Caminho",
+                          description:
+                            "Indica qual arquivo será usado como o iconezinho da aba do navegador (e nos favoritos). Normalmente já vem configurado (ex.: /Logo.ico). Só mude se souber o nome exato do novo arquivo de ícone.",
+                        },
+                      ]}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <Label htmlFor="faviconPath">Caminho</Label>
@@ -611,8 +798,35 @@ export function AdminSiteConfigPage() {
             <TabsContent value="conta">
               <Card>
                 <CardHeader>
-                  <CardTitle>Conta Admin</CardTitle>
-                  <CardDescription>Alterar senha e email da conta administrativa.</CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <CardTitle>Conta Admin</CardTitle>
+                      <CardDescription>Alterar senha e email da conta administrativa.</CardDescription>
+                    </div>
+                    <TabHelpDialog
+                      title="Sobre a aba Conta Admin"
+                      intro="Aqui você cuida dos dados de acesso a este painel de administração (não muda nada visível no site público)."
+                      items={[
+                        {
+                          label: "Alterar Senha",
+                          description:
+                            "Troca a senha usada para entrar neste painel. Digite a senha atual, depois a nova senha duas vezes para confirmar. Use uma senha que só você saiba.",
+                        },
+                        {
+                          label: "Alterar Email",
+                          description:
+                            "Troca o email usado para fazer login neste painel. Digite o novo email e a sua senha atual para confirmar que é você.",
+                        },
+                      ]}
+                      note={
+                        <>
+                          <strong>Atenção:</strong> nesta aba, as mudanças são
+                          aplicadas pelos botões <strong>Alterar Senha</strong> e{" "}
+                          <strong>Alterar Email</strong> — não pelo botão Guardar.
+                        </>
+                      }
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>

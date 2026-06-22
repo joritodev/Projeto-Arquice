@@ -63,7 +63,7 @@ export function ProjectFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[calc(100%-2rem)] sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[calc(100%-2rem)] sm:max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {isEditing ? "Editar projeto" : "Novo projeto"}
@@ -74,12 +74,12 @@ export function ProjectFormDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-0 lg:divide-x lg:divide-border">
           {/* Formulário */}
           <form
             id="project-form"
             onSubmit={handleSubmit}
-            className="space-y-4 order-2 lg:order-1"
+            className="space-y-4 order-2 lg:order-1 lg:pr-12"
           >
             <div>
               <Label htmlFor="project-title">Título *</Label>
@@ -175,7 +175,7 @@ export function ProjectFormDialog({
           </form>
 
           {/* Pré-visualização ao vivo */}
-          <div className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2 lg:pl-12">
             <p className="text-sm font-medium text-muted-foreground mb-2">
               Pré-visualização
             </p>
