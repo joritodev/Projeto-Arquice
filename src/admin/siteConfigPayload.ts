@@ -13,6 +13,7 @@ import {
   FAVICON_PATH,
 } from "../config/siteConfig";
 import { DEFAULT_PROJECTS, type Project } from "../config/projects";
+import { DEFAULT_TEAM, type TeamMember } from "../config/team";
 
 /**
  * Payload JSON (camelCase) alinhado ao que o backend deve aceitar/devolver.
@@ -48,6 +49,8 @@ export type SiteConfigPayload = {
   faviconPath: string;
   /** Projetos exibidos na seção "Projetos Futuros". */
   projects: Project[];
+  /** Membros exibidos na seção "Principais Representantes". */
+  team: TeamMember[];
 };
 
 /**
@@ -81,5 +84,6 @@ export function defaultsFromSiteConfig(): SiteConfigPayload {
     },
     faviconPath: FAVICON_PATH,
     projects: DEFAULT_PROJECTS.map((p) => ({ ...p })),
+    team: DEFAULT_TEAM.map((m) => ({ ...m })),
   };
 }

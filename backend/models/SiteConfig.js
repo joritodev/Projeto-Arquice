@@ -48,6 +48,23 @@ const siteConfigSchema = new mongoose.Schema({
     _id: false,
   },
 
+  team: {
+    type: [
+      {
+        id: { type: String, required: true },
+        name: { type: String, default: "" },
+        role: { type: String, default: "" },
+        bio: { type: String, default: "" },
+        importance: { type: String, default: "" },
+        image: { type: String, default: "" },
+        linkedin: { type: String, default: "#" },
+        email: { type: String, default: "" },
+      },
+    ],
+    default: [],
+    _id: false,
+  },
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('SiteConfig', siteConfigSchema);

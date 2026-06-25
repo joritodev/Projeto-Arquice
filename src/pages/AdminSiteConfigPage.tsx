@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { toast, Toaster } from "sonner";
-import { Pencil, Trash2, Plus, CheckCircle2, RotateCcw } from "lucide-react";
+import { Pencil, Trash2, Plus, CheckCircle2, RotateCcw, UserRound } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
@@ -13,8 +13,10 @@ import { Badge } from "../components/ui/badge";
 import { getAdminApiBaseUrl, getSiteConfig, saveSiteConfig } from "../admin/siteConfigAdminApi";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "../admin/siteConfigPayload";
 import { ProjectFormDialog } from "../components/admin/ProjectFormDialog";
+import { MemberFormDialog } from "../components/admin/MemberFormDialog";
 import { TabHelpDialog } from "../components/admin/TabHelpDialog";
 import { createEmptyProject, getProjectIcon, type Project } from "../config/projects";
+import { createEmptyMember, type TeamMember } from "../config/team";
 import { useAuth } from "../contexts/AuthContext";
 import { apiUrl } from "../lib/api";
 
@@ -55,6 +57,17 @@ export function AdminSiteConfigPage() {
     keyName: "_rhfId",
   });
 
+  const {
+    fields: memberFields,
+    append: appendMember,
+    update: updateMember,
+    remove: removeMember,
+  } = useFieldArray({
+    control,
+    name: "team",
+    keyName: "_rhfId",
+  });
+
   const [projectDialogOpen, setProjectDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [projectDraft, setProjectDraft] = useState<Project>(() => createEmptyProject());
@@ -91,6 +104,39 @@ export function AdminSiteConfigPage() {
   const toggleProjectGoalReached = (index: number) => {
     const current = getValues(`projects.${index}`) as Project;
     update(index, { ...current, goalReached: !current.goalReached });
+  };
+
+  const [memberDialogOpen, setMemberDialogOpen] = useState(false);
+  const [editingMemberIndex, setEditingMemberIndex] = useState<number | null>(null);
+  const [memberDraft, setMemberDraft] = useState<TeamMember>(() => createEmptyMember());
+
+  const openCreateMember = () => {
+    setEditingMemberIndex(null);
+    setMemberDraft(createEmptyMember());
+    setMemberDialogOpen(true);
+  };
+
+  const openEditMember = (index: number) => {
+    const current = getValues(`team.${index}`) as TeamMember;
+    setEditingMemberIndex(index);
+    setMemberDraft({ ...current });
+    setMemberDialogOpen(true);
+  };
+
+  const handleMemberSubmit = (member: TeamMember) => {
+    if (editingMemberIndex === null) {
+      appendMember(member);
+      toast.success("Membro adicionado. Lembre-se de Guardar para publicar.");
+    } else {
+      updateMember(editingMemberIndex, member);
+      toast.success("Membro atualizado. Lembre-se de Guardar para publicar.");
+    }
+    setMemberDialogOpen(false);
+  };
+
+  const handleMemberDelete = (index: number) => {
+    removeMember(index);
+    toast.success("Membro removido. Lembre-se de Guardar para publicar.");
   };
 
   const loadFromServer = useCallback(async () => {
@@ -297,6 +343,7 @@ export function AdminSiteConfigPage() {
               <TabsTrigger value="redes">Redes</TabsTrigger>
               <TabsTrigger value="imagens">Imagens</TabsTrigger>
               <TabsTrigger value="projetos">Projetos</TabsTrigger>
+              <TabsTrigger value="membros">Membros</TabsTrigger>
               <TabsTrigger value="favicon">Favicon</TabsTrigger>
               <TabsTrigger value="conta">Conta</TabsTrigger>
             </TabsList>
@@ -766,6 +813,117 @@ export function AdminSiteConfigPage() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="membros">
+              <Card>
+                <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <CardTitle>Principais Representantes</CardTitle>
+                    <CardDescription>
+                      Crie, edite ou remova os membros exibidos na seção
+                      "Principais Representantes" da home. As alterações são
+                      publicadas ao clicar em <strong>Guardar</strong>.
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <TabHelpDialog
+                      title="Sobre a aba Membros"
+                      intro="Esta aba controla os cards de pessoas que aparecem na seção 'Principais Representantes' da página inicial."
+                      items={[
+                        {
+                          label: "Botão \"Novo membro\"",
+                          description:
+                            "Abre uma janela para adicionar uma pessoa. Enquanto você preenche, vê do lado uma prévia de como o card vai ficar no site.",
+                        },
+                        {
+                          label: "Nome, Cargo, Biografia e Importância",
+                          description:
+                            "São as informações de cada card: o nome da pessoa, a função dela na organização, uma breve apresentação e a frase que destaca a atuação dela.",
+                        },
+                        {
+                          label: "Foto",
+                          description:
+                            "Escolha uma imagem do seu computador — ela é enviada automaticamente e aparece no topo do card, em formato redondo.",
+                        },
+                        {
+                          label: "LinkedIn e Email",
+                          description:
+                            "Links de contato (opcionais). Quando preenchidos, os botões do card ficam clicáveis e levam ao LinkedIn ou abrem um email.",
+                        },
+                        {
+                          label: "Botão de editar (lápis) e remover (lixeira)",
+                          description:
+                            "O lápis abre o membro para mudar os dados. A lixeira apaga o membro da lista.",
+                        },
+                      ]}
+                    />
+                    <Button type="button" onClick={openCreateMember} className="shrink-0">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                      Novo membro
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {memberFields.length === 0 ? (
+                    <p className="text-sm text-muted-foreground py-8 text-center">
+                      Nenhum membro cadastrado. Clique em <strong>Novo membro</strong> para adicionar.
+                    </p>
+                  ) : (
+                    memberFields.map((field, index) => (
+                      <div
+                        key={field._rhfId}
+                        className="flex items-center gap-3 rounded-lg border p-3"
+                      >
+                        {field.image ? (
+                          <img
+                            src={field.image}
+                            alt={`Foto de ${field.name || "membro"}`}
+                            className="h-10 w-10 rounded-full object-cover shrink-0"
+                            width={40}
+                            height={40}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="h-10 w-10 rounded-full flex items-center justify-center shrink-0 bg-brand/10 text-brand">
+                            <UserRound className="h-5 w-5" aria-hidden="true" />
+                          </div>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium truncate">
+                            {field.name || "Sem nome"}
+                          </p>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {field.role || "Sem cargo"}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1 shrink-0">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => openEditMember(index)}
+                            aria-label="Editar membro"
+                          >
+                            <Pencil className="h-4 w-4" aria-hidden="true" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleMemberDelete(index)}
+                            aria-label="Remover membro"
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" aria-hidden="true" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="favicon">
               <Card>
                 <CardHeader>
@@ -873,6 +1031,14 @@ export function AdminSiteConfigPage() {
           initial={projectDraft}
           isEditing={editingIndex !== null}
           onSubmit={handleProjectSubmit}
+        />
+
+        <MemberFormDialog
+          open={memberDialogOpen}
+          onOpenChange={setMemberDialogOpen}
+          initial={memberDraft}
+          isEditing={editingMemberIndex !== null}
+          onSubmit={handleMemberSubmit}
         />
 
         <p className="mt-8 text-center text-sm text-muted-foreground">

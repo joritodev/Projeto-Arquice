@@ -2,6 +2,7 @@ import { SITE_CONFIG_API_PATH } from "./constants";
 import { defaultsFromSiteConfig, type SiteConfigPayload } from "./siteConfigPayload";
 import { getApiBaseUrl } from "../lib/api";
 import { parseProjects } from "../config/projects";
+import { DEFAULT_TEAM, parseTeam } from "../config/team";
 
 /** @deprecated Use getApiBaseUrl from ../lib/api */
 export function getAdminApiBaseUrl(): string {
@@ -33,7 +34,16 @@ function resolveSiteConfigPayload(data: unknown): SiteConfigPayload {
     return defaultsFromSiteConfig();
   }
   const parsed = parseSiteConfigResponse(data);
-  return isUnsetSiteConfig(parsed) ? defaultsFromSiteConfig() : parsed;
+  if (isUnsetSiteConfig(parsed)) {
+    return defaultsFromSiteConfig();
+  }
+  // Configs salvas antes da função "Membros" não têm `team`. Nesse caso,
+  // carrega os representantes que já existem no site (DEFAULT_TEAM) para que
+  // o admin possa editá-los, em vez de mostrar a lista vazia.
+  if (parsed.team.length === 0) {
+    parsed.team = DEFAULT_TEAM.map((m) => ({ ...m }));
+  }
+  return parsed;
 }
 
 function assertApiConfigured(): string {
@@ -97,6 +107,7 @@ export function parseSiteConfigResponse(data: unknown): SiteConfigPayload {
     },
     faviconPath: String(o.faviconPath ?? ""),
     projects: parseProjects(o.projects),
+    team: parseTeam(o.team),
   };
 }
 

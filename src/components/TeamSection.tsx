@@ -1,31 +1,35 @@
-import { Card, CardContent } from "./ui/card";
-import { Linkedin, Mail } from "lucide-react";
-import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import { getApiBaseUrl } from "../lib/api";
+import { SITE_CONFIG_API_PATH } from "../admin/constants";
+import { DEFAULT_TEAM, parseTeam, type TeamMember } from "../config/team";
+import { MemberCard } from "./MemberCard";
 
 export function TeamSection() {
-  const team = [
-    {
-      name: "Maria Solange de Lima Faustino",
-      role: "Presidenta",
-      bio: "presidente da associação remanescente quilombola de Curralinho morrinhos Arquice Ceará",
-      image: "/Maria Solange.jpg",
-      importance: "Tomada de decisões, reuniões e estratégias"
-    },
-    {
-      name: "Francis Girliane Vasconcelos",
-      role: "Sócia Apoiadora",
-      bio: "Aí eu estou como sócia apoiadora da associação, para eventos, reuniões, sistema e o que precisar estou disponível para ajudar.",
-      image: "/Francisca Girliane.jpg",
-      importance: "Gerencia recursos financeiros e parcerias corporativas"
-    },
-    {
-      "name": "Maria Salete Secundo",
-      "role": "Suplente do Conselho Fiscal",
-      "bio": "Administradora com especialização em gestão financeira para o terceiro setor.",
-      "image": "/Maria Salete.jpg",
-      "importance": "Apoia os membros titulares na fiscalização da gestão econômico-financeira e atua na ausência destes para garantir o cumprimento das obrigações estatutárias."
-    },
-  ];
+  // Fallback (DEFAULT_TEAM) só vale enquanto carrega ou se a API falhar.
+  // Quando o backend responde com sucesso, a home reflete exatamente o CRUD.
+  const [team, setTeam] = useState<TeamMember[]>(DEFAULT_TEAM);
+
+  useEffect(() => {
+    const base = getApiBaseUrl();
+    if (!base) return; // Sem API configurada: mantém a lista padrão.
+
+    let cancelled = false;
+    fetch(`${base}${SITE_CONFIG_API_PATH}`, { headers: { Accept: "application/json" } })
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
+      .then((data: unknown) => {
+        if (cancelled) return;
+        const list = parseTeam((data as { team?: unknown })?.team);
+        // Só substitui se o backend tiver membros; caso contrário mantém o fallback.
+        if (list.length > 0) setTeam(list);
+      })
+      .catch(() => {
+        // Em caso de falha de rede/API, mantém o fallback (DEFAULT_TEAM).
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section
@@ -44,47 +48,13 @@ export function TeamSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-reveal>
-          {team.map((member, index) => (
-            <Card key={index} className="card-interactive text-center">
-              <CardContent className="pt-6">
-                <div className="mb-4">
-                  <img
-                    src={member.image}
-                    alt={`Foto de ${member.name}`}
-                    className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-brand/20"
-                    width={128}
-                    height={128}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <h3 className="mb-1">{member.name}</h3>
-                <p className="text-sm text-brand mb-3">{member.role}</p>
-                <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
-                <div className="bg-secondary/20 p-3 rounded mb-4">
-                  <p className="text-xs">{member.importance}</p>
-                </div>
-                <div className="flex gap-2 justify-center">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    aria-label={`LinkedIn de ${member.name}`}
-                  >
-                    <Linkedin className="h-4 w-4" aria-hidden="true" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    aria-label={`Enviar e-mail para ${member.name}`}
-                  >
-                    <Mail className="h-4 w-4" aria-hidden="true" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {team.length > 0 && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-reveal>
+            {team.map((member) => (
+              <MemberCard key={member.id} member={member} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
